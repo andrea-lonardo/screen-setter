@@ -43,6 +43,8 @@ Release tags combine the marketing version and build number: `v<version>.<build>
   launches the app no longer reports the displays as disconnected.
 - Explain the current Open Anyway steps for first launch, and add uninstall,
   support, and security reporting instructions.
+- Add a privacy policy (the app collects no data) and terms of use, linked from
+  Settings › General › About.
 - Require macOS 26. Change the bundle identifier to
   `io.github.andrea-lonardo.screen-setter`, so Open at Login must be turned on
   again.

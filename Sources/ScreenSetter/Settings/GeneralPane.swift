@@ -64,6 +64,9 @@ struct GeneralPane: View {
                 LabeledContent("Source code") {
                     Link("GitHub", destination: AppInfo.repositoryURL)
                 }
+                LabeledContent("Privacy") {
+                    Link("No Data Collected", destination: AppInfo.privacyURL)
+                }
                 LabeledContent("License") {
                     if let licenseURL = AppInfo.licenseURL {
                         Button("MIT License…") { NSWorkspace.shared.open(licenseURL) }

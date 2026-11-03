@@ -152,7 +152,7 @@ Layouts are stored in a single file:
 The previous version of the file is kept beside it as `library.previous.json`.
 If the file can't be read, it is set aside as a backup rather than overwritten,
 and Screen Setter tells you at launch. There are no accounts, telemetry, cloud
-services, or network requests.
+services, or network requests. See the [Privacy Policy](PRIVACY.md).
 
 ## Uninstall
 
@@ -240,7 +240,8 @@ security problems privately as described in [SECURITY.md](SECURITY.md).
 ## License
 
 Screen Setter is free and open source under the [MIT License](LICENSE). It is
-provided as is, without warranty of any kind.
+provided as is, without warranty of any kind. See the [Terms of Use](TERMS.md) and
+the [Privacy Policy](PRIVACY.md): the app collects no data.
 
 Mac and macOS are trademarks of Apple Inc., registered in the U.S. and other
 countries and regions. Screen Setter is not affiliated with or endorsed by Apple.
