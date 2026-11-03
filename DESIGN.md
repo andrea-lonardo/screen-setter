@@ -1,107 +1,105 @@
 # Screen Setter website design
 
-The design system for the website in `docs/`. The direction comes from the
-product itself, not from reference sites (UXKIN was not connected): a precise,
-calm Mac utility, where **the arrangement canvas is the hero**. Displays are
-drawn as tiles that move between layouts, just as they do in the app.
+The design system for the website in `docs/`. It's dark and cinematic, in the
+spirit of bold product sites, with its own identity:
 
-Tokens live as CSS variables in `docs/assets/site.css`. Pages use the variable
-names, never raw values.
+- **Big condensed headlines.**
+- **One electric-blue accent.**
+- **The live demo is the hero.** It shows a small desktop with Screen Setter's
+  real menu open, and choosing a layout moves the display tiles. Spend the
+  boldness there and keep everything else quiet.
 
-## Color
+Tokens are CSS variables in `docs/assets/site.css`. Pages use the names, never
+raw values.
 
-There is one primary, a neutral scale, and a status green. The icon's
-blue-to-indigo gradient appears **only in the icon**. Text, buttons and
-backgrounds never use it.
+## Color (dark only)
 
-| Token | Light | Dark | Role |
-|---|---|---|---|
-| `--bg` | #FAFAFB | #0B0C10 | Page background |
-| `--surface` | #FFFFFF | #14161C | Cards, window frames, code blocks |
-| `--surface-2` | #F1F2F5 | #1C1F27 | Canvas floor, quiet fills, hover |
-| `--border` | #E1E3E8 | #2A2E38 | Dividers, card and input borders |
-| `--text` | #15171C | #F2F3F6 | Headings and body (17:1) |
-| `--text-2` | #545A66 | #A9AFBC | Secondary text (6.6:1 / 8.9:1) |
-| `--text-3` | #6B7180 | #8B92A0 | Captions, meta (4.7:1 / 6.3:1) |
-| `--primary` | #2563EB | #6EA8FF | Buttons, links, display tiles, focus ring |
-| `--on-primary` | #FFFFFF | #0B0C10 | Text on primary (5.2:1 / 8.1:1) |
-| `--success` | #1A7F4B | #3DD68C | "Connected" and verified states |
+| Token | Value | Role |
+|---|---|---|
+| `--bg` | #07080B | Page background |
+| `--surface` | #101218 | Demo window, code blocks, settings mock |
+| `--surface-2` | #171A22 | Canvas floor, hover fills, keycaps |
+| `--border` | #262A35 | Dividers and outlines |
+| `--text` | #F3F4F7 | Headings and body |
+| `--text-2` | #A7ADBA | Secondary text (8.9:1) |
+| `--text-3` | #7E8596 | Captions and fine print (5.4:1) |
+| `--accent` | #3D9BFF | Buttons, links, display tiles, step numbers, focus ring (7:1) |
+| `--on-accent` | #04060A | Text on the accent (7.1:1) |
+| `--success` | #3DD68C | Reserved for verified states |
 
-Dark mode follows `prefers-color-scheme`.
+The icon's blue-to-indigo gradient stays in the icon. No gradient washes or
+glows behind sections.
 
 ## Typography
 
-- **Family:** the system UI stack (`ui-sans-serif, system-ui, …`) and the
-  system monospace stack (`ui-monospace, …`) for URLs, shortcuts and
-  checksums. No web fonts, so there are no third-party font requests, which
-  keeps the privacy policy true.
-- **Weights:** 400, 500, 600 and 700.
+- **Anton**, self-hosted in `docs/fonts` under the OFL. Used for `h1` and `h2`
+  only, in uppercase, set tight.
+- **System UI stack** for everything else.
+- **System monospace** only for code, paths and the checksum command. Never for
+  labels.
 - **Scale:**
+  - display: clamp(56px, 8.4vw, 112px) at 0.9
+  - h2: clamp(40px, 6vw, 84px) at 0.95
+  - feature h3: 22–28px, weight 650
+  - lead: 18–21px
+  - body: 17px at 1.6
+  - fine print: 14px
+- **Line length:** text blocks stay under about 60 characters.
 
-| Name | Size | Line height | Weight | Use |
-|---|---|---|---|---|
-| display | clamp(44px, 7vw, 84px) | 1.02 | 700, tracking −0.035em | Hero headline |
-| h2 | clamp(30px, 4vw, 44px) | 1.1 | 700, tracking −0.02em | Section titles |
-| h3 | 20px | 1.3 | 600 | Feature titles |
-| lead | 20px | 1.5 | 400 | Hero and section intro |
-| body | 17px | 1.6 | 400 | Paragraphs |
-| small | 14px | 1.5 | 500 | Meta, captions, nav |
-| mono | 14px | 1.5 | 500 | Code and shortcuts |
+## Avoided on purpose
 
-- **Line length:** 68 characters at most (`--measure: 68ch`).
+These read as generated pages:
 
-## Spacing
+- small uppercase labels above headings
+- facts joined with dots
+- one highlighted word in a headline
+- numbered pills
+- grids of identical boxed cards
+- the "big number, small label" stat
+- arrows appended to buttons
 
-The scale is 4px-based: 4, 8, 12, 16, 24, 32, 48, 64, 96 and 128
-(`--s-1` … `--s-10`).
+Numbers appear only where the content is a real sequence: How it works and
+the install steps.
 
+## Spacing, shape, depth
+
+- **Spacing:** a 4px-based scale (`--s-1` 4px … `--s-10` 128px).
 - **Sections:** 128px of vertical padding on desktop, 80px on phones.
-- **Content width:** 1120px, with 24px gutters (16px on phones).
-
-## Shape and depth
-
-- **Radius:** `--r-sm` 6px (badges, keys), `--r-md` 10px (buttons, inputs,
-  tiles), `--r-lg` 16px (cards), `--r-xl` 22px (window frames).
-- **Shadows:** `--shadow-window` for screenshots and the canvas window, and
-  `--shadow-tile` for display tiles. No other shadows.
-- **Glass:** glass only where the app uses it, in the canvas window's toolbar.
-  No blurred cards anywhere else.
+- **Content width:** 1200px with 24px gutters.
+- **Radius:** 6px keys, 12px tiles and code, 20px cards, 28px for the demo
+  window, pill buttons.
+- **Shadows:** `--shadow-window` for the demo and the screenshot, and
+  `--shadow-tile` for tiles and the menu.
+- **Glass:** only on the demo's menu, as in the app.
 
 ## Components
 
 - **Buttons:**
-  - Primary: filled `--primary`, 44px tall.
-  - Secondary: `--surface` with a `--border` outline.
-  - Quiet: a text link with an arrow.
-  - Hover darkens or lightens by 8%. Focus shows a 2px `--primary` ring with
-    a 3px offset. Disabled is 45% opacity.
-- **Links:** `--primary`, underlined on hover and focus.
-- **Keycaps:** `kbd` in mono, `--surface` with `--border` and a 1px bottom
-  border, `--r-sm`.
-- **Code and checksum blocks:** `--surface`, `--border`, mono, and a Copy
-  button.
-- **Cards:** used only for the step-by-step install. Features are a split
-  layout with text beside a live demo, not a grid of identical cards.
-- **Navigation:**
-  - A slim sticky bar: icon and name on the left, links on the right, and a
-    Download button.
-  - On phones the links collapse to a single Download button.
-- **Footer:** links to Privacy, Terms, Security, Source and License, plus the
-  Apple trademark line.
+  - Primary: an accent pill.
+  - Secondary: an outlined pill.
+  - Both are 48px tall, with a 2px accent focus ring offset by 3px.
+- **Demo:**
+  - A menu bar strip with the status icon.
+  - A canvas of tiles; the main display shows a white menu-bar strip.
+  - Screen Setter's menu, with checkmark rows and ⌘1–⌘3.
+  - Keys 1–3 also switch layouts, and changes animate only in response to the
+    visitor.
+- **Feature rows:** text beside the thing it describes (keycaps, the
+  automatic-layout setting, the Settings screenshot, the URL, the data path),
+  separated by hairlines rather than boxed.
+- **Footer:** Privacy, Terms, Support, Security, Source and License links, plus
+  the Apple trademark line.
 
-## Imagery and icons
+## Imagery
 
-- **App icon:** `images/app-icon.png`, exported from `Resources/AppIcon.icon`.
+- **App icon:** `images/app-icon.png`.
 - **Screenshots:** offscreen renders of the app's own windows, made with
-  `--render-settings` and `--render-onboarding` from sample data, in both
-  light and dark.
-- **Display tiles:** drawn in HTML/CSS. Never Apple hardware, photos or
-  renders.
-- **Icons:** small inline SVGs drawn for this site, 1.75px stroke, in
-  `currentColor`. No SF Symbols (Apple licenses them for apps on its
-  platforms only), no emoji, and no Apple logos.
+  `--render-settings --dark` from sample data.
+- **Icons:** drawn for this site. No SF Symbols, Apple logos, Apple hardware
+  or emoji.
 
 ## Motion
 
-- Tiles glide between layouts in 450ms on `cubic-bezier(.2, .8, .2, 1)`.
-- With `prefers-reduced-motion`, the tiles change instantly and nothing loops.
+- Tiles glide in 520ms on `cubic-bezier(.2, .8, .2, 1)`, only when the visitor
+  picks a layout.
+- With `prefers-reduced-motion`, changes are instant.
