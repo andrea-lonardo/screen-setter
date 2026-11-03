@@ -264,7 +264,7 @@ security problems privately as described in [SECURITY.md](SECURITY.md).
 
 Screen Setter is free and open source under the [MIT License](LICENSE). It
 includes [Sparkle](https://sparkle-project.org), also under the MIT License
-([Vendor/Sparkle/LICENSE](Vendor/Sparkle/LICENSE)). It is
+([Vendor/Sparkle/LICENSE](Vendor/Sparkle/LICENSE)). Screen Setter is
 provided as is, without warranty of any kind. See the [Terms of Use](TERMS.md) and
 the [Privacy Policy](PRIVACY.md): the app collects no data.
 
