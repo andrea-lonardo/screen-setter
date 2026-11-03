@@ -12,8 +12,9 @@ and the report is credited unless you prefer otherwise.
 
 ## Scope
 
-Screen Setter runs locally, makes no network requests, and needs no special
-permissions. Areas of interest include the `screensetter://` and
+Screen Setter runs locally and needs no special permissions. Its only network
+request is the optional update check through Sparkle, which verifies each
+update's EdDSA signature before installing it. Areas of interest include the `screensetter://` and
 `displaylayouts://` URL handlers, the global keyboard shortcuts, and how saved
 layouts are read from disk.
 

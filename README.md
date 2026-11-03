@@ -153,8 +153,17 @@ Layouts are stored in a single file:
 
 The previous version of the file is kept beside it as `library.previous.json`.
 If the file can't be read, it is set aside as a backup rather than overwritten,
-and Screen Setter tells you at launch. There are no accounts, telemetry, cloud
-services, or network requests. See the [Privacy Policy](PRIVACY.md).
+and Screen Setter tells you at launch. There are no accounts, telemetry, or cloud
+services. The only network request is the optional daily check for updates. See
+the [Privacy Policy](PRIVACY.md).
+
+## Updates
+
+Screen Setter updates itself with [Sparkle](https://sparkle-project.org). The
+second time it opens, it asks whether to check for updates automatically; you
+can change that in **Settings › General › Updates** or use **Check for
+Updates…** in the menu. Updates are signed, and Screen Setter verifies the
+signature before installing one.
 
 ## Uninstall
 
@@ -228,6 +237,7 @@ Sources/ScreenSetter/main.swift                Entry point, URL scheme, command-
 Sources/ScreenSetter/AppModel.swift            Shared app state and operation serialization
 Sources/ScreenSetter/MenuBarController.swift   Menu bar item and menu
 Sources/ScreenSetter/HotkeyCenter.swift        Global keyboard shortcuts
+Sources/ScreenSetter/UpdateController.swift    Sparkle update checks
 Sources/ScreenSetter/Settings/                 Settings, layout editor, and onboarding windows
 Sources/ScreenSetter/LayoutStore.swift         Layout library operations and Undo
 Sources/ScreenSetter/Library.swift             Layout, display set, and shortcut types
@@ -236,6 +246,7 @@ Sources/ScreenSetter/DisplayEngine.swift       Core Graphics capture, preflight,
 Sources/ScreenSetter/PreviewSupport.swift      Sample data for previews
 Tests/                                         Isolated regression suite
 Resources/                                     Bundle metadata and app icon
+Vendor/Sparkle/                                Sparkle 2.10.1 framework and license
 Tools/                                         Icon export and website page helpers
 docs/                                          Website, published with GitHub Pages
 DESIGN.md                                      Website design system
@@ -251,7 +262,9 @@ security problems privately as described in [SECURITY.md](SECURITY.md).
 
 ## License
 
-Screen Setter is free and open source under the [MIT License](LICENSE). It is
+Screen Setter is free and open source under the [MIT License](LICENSE). It
+includes [Sparkle](https://sparkle-project.org), also under the MIT License
+([Vendor/Sparkle/LICENSE](Vendor/Sparkle/LICENSE)). It is
 provided as is, without warranty of any kind. See the [Terms of Use](TERMS.md) and
 the [Privacy Policy](PRIVACY.md): the app collects no data.
 

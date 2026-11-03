@@ -1,0 +1,5 @@
+Sparkle 2.10.1 (https://sparkle-project.org), from
+https://github.com/sparkle-project/Sparkle/releases/download/2.10.1/Sparkle-2.10.1.tar.xz
+SHA-256 of the archive: 1a856d2a9edb8e628de88121d7be04cf0e2167f8641650b78fca00b14244cf27
+Only Sparkle.framework is vendored. The release tools (generate_keys, sign_update,
+generate_appcast) come from the same archive and are not committed.

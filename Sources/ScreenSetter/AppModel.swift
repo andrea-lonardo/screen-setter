@@ -13,6 +13,7 @@ final class AppModel {
     let store: LayoutStore
     /// True for `--preview-settings` / `--render-settings`: sample data, no display changes.
     let isPreview: Bool
+    @ObservationIgnored let updates: UpdateController
 
     private(set) var library = LayoutLibrary()
     private(set) var currentSnapshot: LayoutSnapshot?
@@ -48,6 +49,7 @@ final class AppModel {
     init(store: LayoutStore, isPreview: Bool = false) {
         self.store = store
         self.isPreview = isPreview
+        updates = UpdateController(enabled: !isPreview)
         library = store.library
         undoActionTitle = store.undoActionTitle
     }

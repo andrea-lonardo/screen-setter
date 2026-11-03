@@ -45,6 +45,9 @@ Release tags combine the marketing version and build number: `v<version>.<build>
   support, and security reporting instructions.
 - Add a privacy policy (the app collects no data) and terms of use, linked from
   Settings › General › About.
+- Check for updates with Sparkle: the app asks on its second launch whether to
+  check automatically, and offers **Check for Updates…** in the menu and a
+  setting in Settings › General. Updates are EdDSA-signed.
 - Add a website with a live demo, download steps, privacy, terms and support
   pages, published from `docs/` with GitHub Pages.
 - Require macOS 26. Change the bundle identifier to

@@ -6,8 +6,9 @@ GitHub repository and website.
 ## Summary
 
 Screen Setter doesn't collect, send, or sell any personal data. It has no
-accounts, analytics, advertising, crash reporting, or tracking, and it makes no
-network requests. Everything it stores stays on your Mac.
+accounts, analytics, advertising, crash reporting, or tracking. Its only network
+request is an optional check for updates, described below. Everything it stores
+stays on your Mac.
 
 ## What the app stores on your Mac
 
@@ -19,7 +20,8 @@ Screen Setter saves what it needs to remember your layouts, only on your Mac:
   (name, vendor, model, and serial number) so a layout can find the same
   displays again. A copy of the previous version is kept beside it, and a file
   that couldn't be read is set aside as a backup.
-- The Settings window's size and position, in
+- The Settings window's size and position, and whether and when it last
+  checked for updates, in
   `~/Library/Preferences/io.github.andrea-lonardo.screen-setter.plist`.
 - A login item, only if you turn on **Open at Login**.
 
@@ -57,11 +59,24 @@ cookies, or tracking scripts to the website.
 Anything you post in a public issue is visible to everyone. Report security
 problems privately as described in [SECURITY.md](SECURITY.md).
 
-## Future versions
+## Checking for updates
 
-If a future version adds anything that connects to the internet, such as a
-check for updates, this policy will be updated before that version is released,
-saying what is sent, where, and how to turn it off.
+Screen Setter uses [Sparkle](https://sparkle-project.org), an open-source
+updater, to find new versions. The second time you open the app, it asks
+whether to check automatically. You can change your answer anytime in Settings
+› General › Updates, or check by hand with **Check for Updates…** in the menu.
+
+A check downloads a small file (`appcast.xml`) from this project's website on
+GitHub Pages, at most once a day when automatic checks are on. The request
+includes your IP address, as every web request does, and the app's name and
+version. Sparkle's optional system profile, which would add details such as your
+Mac model and macOS version, is turned off. If you install an update, it is
+downloaded from GitHub Releases. GitHub handles these requests as described
+below. Updates are verified with a signature before they are installed.
+
+If a future version connects to the internet in any other way, this policy will
+be updated before that version is released, saying what is sent, where, and how
+to turn it off.
 
 ## Your choices
 

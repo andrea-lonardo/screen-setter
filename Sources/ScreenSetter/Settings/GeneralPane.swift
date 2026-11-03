@@ -25,6 +25,20 @@ struct GeneralPane: View {
                 }
             }
 
+            Section("Updates") {
+                Toggle("Check for updates automatically", isOn: Binding(
+                    get: { model.updates.checksAutomatically },
+                    set: { model.updates.checksAutomatically = $0 }
+                ))
+                LabeledContent {
+                    Button("Check Now") { model.updates.checkForUpdates() }
+                        .disabled(!model.updates.canCheckForUpdates)
+                } label: {
+                    Text("Updates")
+                    Text("With automatic checks on, Screen Setter asks its website once a day whether a new version exists. Only the app’s version is sent.")
+                }
+            }
+
             Section("Displays") {
                 LabeledContent {
                     Button("Display Settings…") { model.openDisplaySettings() }
@@ -77,7 +91,7 @@ struct GeneralPane: View {
             } header: {
                 Text("About")
             } footer: {
-                Text("Screen Setter is free and open source, provided as is, without warranty of any kind. Mac and macOS are trademarks of Apple Inc., registered in the U.S. and other countries and regions.")
+                Text("Screen Setter is free and open source, provided as is, without warranty of any kind. Updates use Sparkle, under the MIT License. Mac and macOS are trademarks of Apple Inc., registered in the U.S. and other countries and regions.")
                     .foregroundStyle(.secondary)
             }
         }

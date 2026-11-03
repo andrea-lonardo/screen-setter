@@ -10,9 +10,12 @@ readonly app_dir="${staging_dir}/Screen Setter.app"
 readonly executable="${app_dir}/Contents/MacOS/Screen Setter"
 trap 'rm -rf "${staging_dir}"' EXIT
 
-mkdir -p "${app_dir}/Contents/MacOS" "${app_dir}/Contents/Resources" "${cache_dir}"
+mkdir -p "${app_dir}/Contents/MacOS" "${app_dir}/Contents/Resources" "${app_dir}/Contents/Frameworks" "${cache_dir}"
 cp "${project_dir}/Resources/Info.plist" "${app_dir}/Contents/Info.plist"
 cp "${project_dir}/LICENSE" "${app_dir}/Contents/Resources/LICENSE"
+# Sparkle handles updates. It is embedded with its own signature intact.
+ditto "${project_dir}/Vendor/Sparkle/Sparkle.framework" "${app_dir}/Contents/Frameworks/Sparkle.framework"
+cp "${project_dir}/Vendor/Sparkle/LICENSE" "${app_dir}/Contents/Resources/Sparkle-LICENSE"
 
 # The Icon Composer icon compiles to Assets.car (the layered Liquid Glass icon)
 # plus AppIcon.icns. Needs Xcode for actool.
@@ -40,6 +43,9 @@ for arch in arm64 x86_64; do
     -framework ServiceManagement \
     -framework ColorSync \
     -framework Carbon \
+    -F "${project_dir}/Vendor/Sparkle" \
+    -framework Sparkle \
+    -Xlinker -rpath -Xlinker @executable_path/../Frameworks \
     "${project_dir}"/Sources/ScreenSetter/**/*.swift \
     -o "${staging_dir}/Screen Setter-${arch}"
 done

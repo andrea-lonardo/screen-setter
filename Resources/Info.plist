@@ -33,6 +33,10 @@
             <array><string>screensetter</string><string>displaylayouts</string></array>
         </dict>
     </array>
+    <key>SUFeedURL</key>
+    <string>https://andrea-lonardo.github.io/screen-setter/appcast.xml</string>
+    <key>SUPublicEDKey</key>
+    <string>3bV3CVnUpeh1BbAsflAdYpYZKH/iL0ZVSszH8s/nnQs=</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.utilities</string>
     <key>LSMinimumSystemVersion</key>

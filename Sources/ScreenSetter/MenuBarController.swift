@@ -98,6 +98,9 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         menu.addItem(.separator())
         menu.addItem(item("Display Settings…", action: #selector(openDisplaySettings), symbol: "display"))
         menu.addItem(item("Settings…", action: #selector(openSettings), symbol: "gearshape", key: ","))
+        let updates = item("Check for Updates…", action: #selector(checkForUpdates), symbol: "arrow.triangle.2.circlepath")
+        updates.isEnabled = model.updates.canCheckForUpdates
+        menu.addItem(updates)
         menu.addItem(.separator())
         let quit = item("Quit Screen Setter", action: #selector(quit), symbol: "power", key: "q")
         quit.isEnabled = !busy
@@ -174,6 +177,8 @@ final class MenuBarController: NSObject, NSMenuDelegate {
     @objc private func showReview() { model.showReviewDetails() }
     @objc private func openDisplaySettings() { model.openDisplaySettings() }
     @objc private func openSettings() { model.openSettings() }
+
+    @objc private func checkForUpdates() { model.updates.checkForUpdates() }
 
     @objc private func quit() {
         guard !model.isBusy else { return }
