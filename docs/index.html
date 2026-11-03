@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Screen Setter — your display setups, one click away</title>
+  <meta name="description" content="A free, open-source menu-bar app for macOS that saves how your displays are arranged and puts each arrangement back with a click, a keyboard shortcut, or automatically.">
+  <meta name="theme-color" content="#07080b">
+  <meta property="og:title" content="Screen Setter">
+  <meta property="og:description" content="Save your display arrangements and switch between them with a click, a shortcut, or automatically. Free and open source for macOS.">
+  <meta property="og:image" content="https://andrea-lonardo.github.io/screen-setter/images/app-icon.png">
+  <link rel="icon" href="images/app-icon.png">
+  <link rel="preload" href="fonts/Anton-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="images/app-icon.png" alt="" width="30" height="30">Screen Setter</a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#faq">Questions</a>
+        <a href="https://github.com/andrea-lonardo/screen-setter">GitHub</a>
+      </nav>
+      <a class="btn btn-primary" href="#download">Download</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <h1 class="display">Your displays, set in one click.</h1>
+          <p class="lead">Screen Setter remembers how your displays are arranged — side by side, stacked, or mirrored — and puts each arrangement back from the menu bar, with a keyboard shortcut, or automatically when the displays connect.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#download">Download for free</a>
+            <a class="btn btn-secondary" href="https://github.com/andrea-lonardo/screen-setter">View the source</a>
+          </div>
+          <p class="fineprint">For macOS 26 or later, on Apple silicon and Intel Macs. Open source, and it collects no data.</p>
+        </div>
+
+        <figure class="desk" id="demo">
+          <div class="desk-bar">
+            <span class="desk-set" id="desk-set">Built-in Display + Studio Display</span>
+            <span class="status-item" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"><rect x="3" y="5" width="11" height="8" rx="2"/><rect x="10" y="11" width="11" height="8" rx="2"/></svg>
+            </span>
+          </div>
+          <div class="desk-body">
+            <div class="canvas" id="canvas" role="img" aria-label="Studio Display above the Built-in Display">
+              <div class="tile" data-id="studio"><span><b>Studio Display</b> 2560 × 1440</span></div>
+              <div class="tile" data-id="builtin"><span><b>Built-in</b> 1512 × 982</span></div>
+            </div>
+            <div class="menu" role="group" aria-label="Choose a layout">
+              <p class="menu-head">Built-in Display + Studio Display</p>
+              <button class="menu-row" type="button" data-layout="above" aria-pressed="true">Studio Display Above<kbd>⌘1</kbd></button>
+              <button class="menu-row" type="button" data-layout="side" aria-pressed="false">Side by Side<kbd>⌘2</kbd></button>
+              <button class="menu-row" type="button" data-layout="mirror" aria-pressed="false">Mirror for Presenting<kbd>⌘3</kbd></button>
+              <hr>
+              <span class="menu-row is-static">Undo<kbd>⌘Z</kbd></span>
+              <span class="menu-row is-static">Save Current Arrangement…</span>
+            </div>
+          </div>
+          <figcaption>Try it: pick a layout in the menu, or press 1, 2 or 3.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <h2 id="how-title">Arrange once. Switch anytime.</h2>
+        <ol class="steps">
+          <li><h3>Arrange your displays</h3><p>Set them up the way you like in System Settings › Displays.</p></li>
+          <li><h3>Save it as a layout</h3><p>Choose Save Current Arrangement… from the menu bar and give it a name. Save as many as you like.</p></li>
+          <li><h3>Switch whenever you want</h3><p>Pick a layout from the menu, press its shortcut, or let it apply on its own when those displays connect.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="wrap">
+        <h2 id="features-title">What it does</h2>
+        <p class="lead section-lead">A layout is a snapshot of a real arrangement: which display is where, which one has the menu bar, Extend or Mirror, and each display's resolution. Layouts are grouped by the exact displays they use, so the menu only shows what fits what's plugged in.</p>
+
+        <div class="feature">
+          <div class="feature-text">
+            <h3>A keyboard shortcut for every layout</h3>
+            <p>Shortcuts work in every app and don't need Accessibility permission. While the menu is open, ⌘1 to ⌘9 pick the first nine layouts, and Undo puts back the arrangement from just before.</p>
+          </div>
+          <div class="keys" aria-label="Control, Option, Command, 1"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>⌘</kbd><kbd>1</kbd></div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-text">
+            <h3>Automatic, but careful</h3>
+            <p>Choose one layout per set of displays to apply when they connect, when your Mac wakes, or when the app opens. It only acts when the exact same displays are back and the saved resolutions are still available, and it never undoes a change you just made by hand.</p>
+          </div>
+          <div class="setting" aria-hidden="true">
+            <span>When these displays connect</span>
+            <span class="setting-value">Studio Display Above</span>
+          </div>
+        </div>
+
+        <div class="feature feature-wide">
+          <div class="feature-text">
+            <h3>Edit a layout without the displays</h3>
+            <p>Drag displays into place, choose Extend or Mirror, the main display and each resolution, even while they're unplugged. Every edit is checked before it's saved: one main display, no overlaps, every display touching another.</p>
+          </div>
+          <img class="shot" src="images/settings-dark.png" width="1720" height="1360" loading="lazy" alt="Screen Setter Settings listing three layouts for a built-in display and a Studio Display, one with a keyboard shortcut, plus the automatic layout setting">
+        </div>
+
+        <div class="feature">
+          <div class="feature-text">
+            <h3>Works with the Shortcuts app</h3>
+            <p>Switch from Shortcuts, scripts or launchers with an Open URLs action. Links can only apply saved layouts; they can't change or delete anything.</p>
+          </div>
+          <div class="code">screensetter://apply/Studio%20Display%20Above<button class="copy" type="button" data-copy="screensetter://apply/Studio%20Display%20Above">Copy</button></div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-text">
+            <h3>Nothing leaves your Mac</h3>
+            <p>No accounts, analytics or tracking, and the app makes no network requests. Your layouts live in one file in your Library folder. <a href="privacy/">Read the privacy policy</a>.</p>
+          </div>
+          <pre class="path" aria-label="Where layouts are stored">~/Library/Application Support/
+  Screen Setter/library.json</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="download" aria-labelledby="download-title">
+      <div class="wrap">
+        <h2 id="download-title">Get Screen Setter. It's free.</h2>
+        <p class="lead section-lead">Version 2.0, for macOS 26 or later on Apple silicon and Intel Macs.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://github.com/andrea-lonardo/screen-setter/releases/latest">Download Screen Setter.zip</a>
+          <a class="btn btn-secondary" href="https://github.com/andrea-lonardo/screen-setter/releases">All releases</a>
+        </div>
+
+        <ol class="install">
+          <li><h3>Unzip and move it</h3><p>Move Screen Setter to your Applications folder, then open it.</p></li>
+          <li><h3>Allow it once</h3><p>macOS says it can't verify the app. Click Done, open System Settings › Privacy &amp; Security, and click <strong>Open Anyway</strong>.</p></li>
+          <li><h3>Confirm</h3><p>Click Open. From then on it opens normally and lives in your menu bar.</p></li>
+        </ol>
+
+        <p class="note">macOS asks because Screen Setter is free and isn't notarized by Apple, which needs a paid developer membership. To check that your download is the published one, compare its SHA-256 with the one on the release page:</p>
+        <div class="code">shasum -a 256 ~/Downloads/"Screen Setter.zip"<button class="copy" type="button" data-copy='shasum -a 256 ~/Downloads/"Screen Setter.zip"'>Copy</button></div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <h2 id="faq-title">Questions</h2>
+        <div class="faq">
+          <details>
+            <summary>Why does macOS warn me the first time?</summary>
+            <p>Apple notarizes apps only for paid developer members. Screen Setter is free and open source, so it's signed without that membership. Follow the three steps above once. The source code is on GitHub if you'd like to check it or build it yourself.</p>
+          </details>
+          <details>
+            <summary>What if a display goes dark after switching?</summary>
+            <p>Choose Undo in the menu to put back the arrangement from just before. You can also unplug and reconnect the display, or fix it in System Settings › Displays. Screen Setter checks that every saved display and resolution is available before it changes anything.</p>
+          </details>
+          <details>
+            <summary>Where is the app after I open it?</summary>
+            <p>In the menu bar; it has no Dock icon. If macOS hides it to make room, open the app again to show its settings.</p>
+          </details>
+          <details>
+            <summary>Does it handle Sidecar, rotation or window positions?</summary>
+            <p>No. Rotation is kept as saved, but changing it needs System Settings. Sidecar connections, turning displays off, HDR and color settings, and window positions are outside what it does.</p>
+          </details>
+          <details>
+            <summary>I used Display Layouts. Do I lose my layouts?</summary>
+            <p>No. Screen Setter was called Display Layouts until version 2.0. It copies your saved layouts the first time it opens, and old displaylayouts:// links keep working.</p>
+          </details>
+          <details>
+            <summary>How do I uninstall it?</summary>
+            <p>Turn off Open at Login, quit the app from its menu, and move it to the Trash. To remove your layouts too, delete the Screen Setter folder in ~/Library/Application Support.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy/">Privacy</a>
+        <a href="terms/">Terms</a>
+        <a href="support/">Support</a>
+        <a href="https://github.com/andrea-lonardo/screen-setter/blob/main/SECURITY.md">Security</a>
+        <a href="https://github.com/andrea-lonardo/screen-setter">Source</a>
+        <a href="https://github.com/andrea-lonardo/screen-setter/blob/main/LICENSE">MIT License</a>
+      </nav>
+      <p>© 2026 Andrea Lonardo. Screen Setter is free software, provided as is.</p>
+      <p>Mac and macOS are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Screen Setter is not affiliated with or endorsed by Apple. Headlines are set in Anton, under the SIL Open Font License.</p>
+    </div>
+  </footer>
+
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

@@ -14,6 +14,8 @@ which display is where, which is the main display, Extend or Mirror, and each
 display's resolution. Screen Setter groups them by the displays they use, so the
 menu only ever shows layouts that fit what is plugged in right now.
 
+Website: [andrea-lonardo.github.io/screen-setter](https://andrea-lonardo.github.io/screen-setter/)
+
 **Version 2.0 (21), in development.** Requires macOS 26 or later, on Apple silicon
 or Intel.
 
@@ -211,6 +213,14 @@ open -n "build/Screen Setter.app" --args --preview-onboarding
 "build/Screen Setter.app/Contents/MacOS/Screen Setter" --render-onboarding /tmp/welcome.png
 ```
 
+The website in `docs/` is static HTML. Its Privacy, Terms and Support pages are
+generated from `PRIVACY.md`, `TERMS.md` and `SUPPORT.md`; regenerate them after
+editing those files:
+
+```sh
+python3 Tools/build_site_pages.py
+```
+
 ## Source layout
 
 ```text
@@ -226,14 +236,16 @@ Sources/ScreenSetter/DisplayEngine.swift       Core Graphics capture, preflight,
 Sources/ScreenSetter/PreviewSupport.swift      Sample data for previews
 Tests/                                         Isolated regression suite
 Resources/                                     Bundle metadata and app icon
-Tools/                                         Icon export helper
+Tools/                                         Icon export and website page helpers
+docs/                                          Website, published with GitHub Pages
+DESIGN.md                                      Website design system
 ```
 
 See [CHANGELOG.md](CHANGELOG.md) for changes and previous releases.
 
 ## Support
 
-Report bugs and ask questions in
+See [SUPPORT.md](SUPPORT.md) for common fixes. Report bugs and ask questions in
 [GitHub Issues](https://github.com/andrea-lonardo/screen-setter/issues). Report
 security problems privately as described in [SECURITY.md](SECURITY.md).
 
