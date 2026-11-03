@@ -29,9 +29,11 @@
   const tiles = [...canvas.querySelectorAll(".tile")];
   const rows = [...document.querySelectorAll(".menu-row[data-layout]")];
   const narrow = window.matchMedia("(max-width: 620px)");
+  const demo = document.getElementById("demo");
+  const status = document.getElementById("demo-status");
   let current = "above";
 
-  function show(name) {
+  function show(name, announce = true) {
     const layout = layouts[name];
     const dx = narrow.matches ? 36 : 0;
     for (const tile of tiles) {
@@ -47,20 +49,21 @@
     }
     for (const row of rows) row.setAttribute("aria-pressed", String(row.dataset.layout === name));
     canvas.setAttribute("aria-label", layout.label);
+    if (announce && status) status.textContent = `${rows.find((r) => r.dataset.layout === name).firstChild.textContent} applied: ${layout.label}.`;
     current = name;
   }
 
   rows.forEach((row) => row.addEventListener("click", () => show(row.dataset.layout)));
 
-  // Keys 1–3 pick layouts, like ⌘1–⌘3 in the app's menu.
-  document.addEventListener("keydown", (event) => {
+  // Keys 1–3 pick layouts, like ⌘1–⌘3 in the app's menu, while the demo has focus.
+  demo.addEventListener("keydown", (event) => {
     if (event.metaKey || event.ctrlKey || event.altKey) return;
     const index = Number(event.key) - 1;
     if (index >= 0 && index < order.length) show(order[index]);
   });
 
-  narrow.addEventListener?.("change", () => show(current));
-  show(current);
+  narrow.addEventListener?.("change", () => show(current, false));
+  show(current, false);
 })();
 
 // Copy buttons for the URL and checksum examples.
