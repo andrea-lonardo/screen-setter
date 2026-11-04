@@ -33,12 +33,24 @@
   const status = document.getElementById("demo-status");
   let current = "above";
 
+  // Where the menu overlaps the canvas, the arrangements shrink (about their
+  // vertical centre) to fit in the space left of it, so tiles never go under it.
+  const menu = document.querySelector(".desk .menu");
+  const RIGHT = Math.max(...Object.values(layouts).flatMap((l) => Object.values(l.rects).map((r) => r.x + r.w)));
+  function fit() {
+    if (narrow.matches || !menu || !canvas.clientWidth) return 1;
+    const free = ((menu.offsetLeft - 12) / canvas.clientWidth) * W;
+    return Math.min(1, Math.max(0.5, free / RIGHT));
+  }
+
   function show(name, announce = true) {
     const layout = layouts[name];
     const dx = narrow.matches ? 36 : 0;
+    const k = fit();
     for (const tile of tiles) {
       const id = tile.dataset.id;
-      const rect = layout.rects[id];
+      const r = layout.rects[id];
+      const rect = { x: r.x * k, y: H / 2 + (r.y - H / 2) * k, w: r.w * k, h: r.h * k };
       tile.classList.toggle("is-main", id === "studio");
       tile.classList.toggle("is-ghost", id === layout.ghost);
       tile.style.zIndex = id === layout.ghost ? 0 : 1;
@@ -111,6 +123,7 @@
   }
 
   narrow.addEventListener?.("change", () => show(current, false));
+  if ("ResizeObserver" in window) new ResizeObserver(() => show(current, false)).observe(canvas);
   show(current, false);
   schedule();
 })();

@@ -316,6 +316,9 @@ button.menu-row:hover kbd, button.menu-row:focus-visible kbd, button.menu-row.is
 .page li { margin-bottom: var(--s-2); }
 
 /* Hero headline: "Your displays," over "set in one click.", the two key words in the accent. */
+/* The copy column is a size container, so the headline scales to fit it instead of widening it
+   (each line is about 6.5 times the font size wide). */
+.hero-copy { container-type: inline-size; min-width: 0; }
 .hero-title > span { display: block; white-space: nowrap; }
-.hero .hero-title { font-size: clamp(40px, 6.6vw, 96px); }
+.hero .hero-title { font-size: clamp(36px, 14.5cqi, 104px); }
 .hero-title em { font-style: normal; color: var(--accent); }
