@@ -81,7 +81,8 @@ to turn it off.
 ## Your choices
 
 You can delete your data at any time. Quit the app, then delete the files
-listed above, or follow the uninstall steps in the [README](README.md#uninstall).
+listed above, or follow the uninstall steps on the
+[website](https://andrea-lonardo.github.io/screen-setter/#faq).
 Because the developer holds no data about you, there is nothing to request,
 correct, or delete on the developer's side.
 
