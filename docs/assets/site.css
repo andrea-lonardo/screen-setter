@@ -204,8 +204,8 @@ kbd {
 }
 .menu-row kbd { margin-left: auto; padding: 0; min-width: 0; border: 0; background: none; font: 500 13px/1 var(--font-ui); color: var(--text-3); }
 .menu-row[aria-pressed="true"]::before { content: "✓"; position: absolute; left: 11px; font-weight: 700; }
-button.menu-row:hover, button.menu-row:focus-visible { background: var(--accent); color: var(--on-accent); outline: none; }
-button.menu-row:hover kbd, button.menu-row:focus-visible kbd { color: var(--on-accent); }
+button.menu-row:hover, button.menu-row:focus-visible, button.menu-row.is-picking { background: var(--accent); color: var(--on-accent); outline: none; }
+button.menu-row:hover kbd, button.menu-row:focus-visible kbd, button.menu-row.is-picking kbd { color: var(--on-accent); }
 .menu-row.is-static { color: var(--text-2); cursor: default; }
 .menu hr { border: 0; height: 1px; background: rgb(255 255 255 / 0.1); margin: 5px 8px; }
 .desk figcaption { padding: var(--s-3) var(--s-4); font-size: 14px; color: var(--text-3); border-top: 1px solid var(--border); }

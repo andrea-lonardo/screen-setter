@@ -53,17 +53,66 @@
     current = name;
   }
 
-  rows.forEach((row) => row.addEventListener("click", () => show(row.dataset.layout)));
+  // Autoplay: until the visitor picks a layout, the demo steps through the
+  // layouts on its own, briefly highlighting the row as if it were chosen. It
+  // waits while the pointer or focus is on the demo, off screen, in a background
+  // tab, or with reduced motion. The first click or key press takes over for good.
+  const STEP = 3200, PICK = 420;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let taken = false, hovering = false, focused = false, visible = true;
+  let timer = 0, pickTimer = 0;
+
+  const canPlay = () => !taken && !hovering && !focused && visible && !document.hidden && !reduceMotion.matches;
+
+  function stopAuto() {
+    clearTimeout(timer);
+    clearTimeout(pickTimer);
+    rows.forEach((row) => row.classList.remove("is-picking"));
+  }
+
+  function schedule() {
+    stopAuto();
+    if (!canPlay()) return;
+    timer = setTimeout(() => {
+      const next = order[(order.indexOf(current) + 1) % order.length];
+      const row = rows.find((r) => r.dataset.layout === next);
+      row.classList.add("is-picking");
+      pickTimer = setTimeout(() => {
+        row.classList.remove("is-picking");
+        show(next, false);
+        schedule();
+      }, PICK);
+    }, STEP - PICK);
+  }
+
+  function takeOver(name) {
+    taken = true;
+    stopAuto();
+    show(name);
+  }
+
+  rows.forEach((row) => row.addEventListener("click", () => takeOver(row.dataset.layout)));
 
   // Keys 1–3 pick layouts, like ⌘1–⌘3 in the app's menu, while the demo has focus.
   demo.addEventListener("keydown", (event) => {
     if (event.metaKey || event.ctrlKey || event.altKey) return;
     const index = Number(event.key) - 1;
-    if (index >= 0 && index < order.length) show(order[index]);
+    if (index >= 0 && index < order.length) takeOver(order[index]);
   });
+
+  demo.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") { hovering = true; schedule(); } });
+  demo.addEventListener("pointerleave", () => { hovering = false; schedule(); });
+  demo.addEventListener("focusin", () => { focused = true; schedule(); });
+  demo.addEventListener("focusout", (e) => { if (!demo.contains(e.relatedTarget)) { focused = false; schedule(); } });
+  document.addEventListener("visibilitychange", schedule);
+  reduceMotion.addEventListener?.("change", schedule);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; schedule(); }, { threshold: 0.4 }).observe(demo);
+  }
 
   narrow.addEventListener?.("change", () => show(current, false));
   show(current, false);
+  schedule();
 })();
 
 // Copy buttons for the URL and checksum examples.
