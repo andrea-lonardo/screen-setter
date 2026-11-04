@@ -111,9 +111,10 @@
   watchScenes();
   sync();
 
-  // Download button: the .zip downloads as usual; the page then shows what to do next.
-  document.querySelector(".get-hero .btn-primary")?.addEventListener("click", () => {
-    status.textContent = "Your download has started. Now:";
+  // Download button, below the steps: the .dmg downloads as usual; the page then
+  // goes back up to the steps and plays them from the start.
+  document.getElementById("download-button")?.addEventListener("click", () => {
+    status.textContent = "Your download has started. Here's what to do next:";
     section.scrollIntoView({ behavior: reduce.matches ? "auto" : "smooth", block: "start" });
     if (on) select(0);
   });
