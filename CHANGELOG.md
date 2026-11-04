@@ -2,6 +2,17 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
+## 2.1 (22) — 2026-11-04
+
+- Reorganize Settings: the sidebar lists your display sets under **Layouts**,
+  then **General**, **Shortcuts**, **Automation** and **About** under
+  **Settings**.
+- Add a **Shortcuts** pane to see and record every layout's keyboard shortcut
+  in one place.
+- Add an **Automation** pane with each display set's automatic layout and a
+  ready-to-copy `screensetter://` link for every layout.
+- Move updates, links and the license to **About**.
+
 ## 2.0 (21) — 2026-11-04
 
 - Rename the app to Screen Setter, since another Mac app is already called

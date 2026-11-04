@@ -6,7 +6,7 @@ Ask questions and report bugs in
 [GitHub Issues](https://github.com/andrea-lonardo/screen-setter/issues). Search
 the existing issues first. When you open a new one, include:
 
-- your Screen Setter version, from Settings › General › About,
+- your Screen Setter version, from Settings › About,
 - your macOS version and Mac model,
 - the displays involved and how they're connected,
 - what you expected and what happened instead.

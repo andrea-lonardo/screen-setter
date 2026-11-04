@@ -64,7 +64,7 @@ problems privately as described in [SECURITY.md](SECURITY.md).
 Screen Setter uses [Sparkle](https://sparkle-project.org), an open-source
 updater, to find new versions. The second time you open the app, it asks
 whether to check automatically. You can change your answer anytime in Settings
-› General › Updates, or check by hand with **Check for Updates…** in the menu.
+› About, or check by hand with **Check for Updates…** in the menu.
 
 A check downloads a small file (`appcast.xml`) from this project's website on
 GitHub Pages, at most once a day when automatic checks are on. The request
