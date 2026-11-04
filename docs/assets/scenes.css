@@ -1,0 +1,400 @@
+/* Screen Setter website: drawn UI scenes for "How it works" and "What it does".
+   Each scene is the product UI in HTML/CSS, looping on CSS keyframes. The base
+   styles are every scene's end state, so with reduced motion (or no animation
+   support) each one shows its meaningful result statically. Sizes use cqw, so a
+   scene scales with its own width (16:10, 100cqw wide, 62.5cqw tall). */
+
+/* Layout: alternating text + scene rows */
+
+.flow { list-style: none; counter-reset: step; margin: var(--s-8) 0 0; padding: 0; }
+.flow > li {
+  counter-increment: step; display: grid; gap: var(--s-5); align-items: center;
+  padding: var(--s-8) 0; border-top: 1px solid var(--border);
+}
+.flow > li:first-child { padding-top: 0; border-top: 0; }
+.flow > li:last-child { padding-bottom: 0; }
+.flow-text::before {
+  content: counter(step); display: block; margin-bottom: var(--s-4);
+  font: 400 56px/0.9 var(--font-display); color: var(--accent);
+}
+.flow-text p { color: var(--text-2); margin: 0; max-width: 46ch; }
+.flow-text h3 { font-size: clamp(22px, 2.4vw, 28px); line-height: 1.2; letter-spacing: -0.01em; }
+
+.feature-visual { display: grid; gap: var(--s-4); min-width: 0; }
+.feature-visual .path { padding: 0 var(--s-1); }
+
+@media (min-width: 900px) {
+  .flow > li { grid-template-columns: 1fr 1.15fr; gap: var(--s-8); }
+  .flow > li:nth-child(even) .scene { order: -1; }
+  .feature-flip .feature-visual { order: -1; }
+  .feature-flip.feature-wide { grid-template-columns: 1.6fr 1fr; }
+}
+
+/* Reveal on scroll (progressive enhancement: visible without JS) */
+
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 700ms var(--ease), transform 700ms var(--ease); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+.js .scene.reveal { transition-delay: 90ms; }
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* Nav: the section in view */
+
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 2px;
+  border-radius: 2px; background: var(--accent); opacity: 0; transform: scaleX(0.4);
+  transition: opacity 240ms var(--ease), transform 240ms var(--ease);
+}
+.nav-links a[aria-current="true"] { color: var(--text); }
+.nav-links a[aria-current="true"]::after { opacity: 1; transform: none; }
+
+/* The scene frame */
+
+.scene {
+  --d: 8s;
+  --io: cubic-bezier(0.65, 0, 0.35, 1);
+  --tile-a: #4aa6ff; --tile-b: #2a6fe0;
+  --hl: color-mix(in srgb, var(--accent) 22%, transparent);
+  --play: running;
+  position: relative; container-type: inline-size; aspect-ratio: 16 / 10;
+  width: 100%; min-width: 0; overflow: hidden; isolation: isolate;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-window);
+}
+.js .scene:not(.is-playing) { --play: paused; }
+.stage {
+  position: absolute; inset: 0; pointer-events: none; user-select: none;
+  font-size: max(7px, 2cqw); line-height: 1.3; color: var(--text);
+}
+.stage > * { position: absolute; }
+
+/* Shared parts: menu bar, floor, tiles, menu, keycaps */
+
+.sc-bar {
+  left: 0; right: 0; top: 0; height: 6.4cqw; display: flex; align-items: center; gap: 1.6cqw;
+  padding: 0 2.2cqw; background: rgb(255 255 255 / 0.05); border-bottom: 1px solid var(--border);
+  font-size: max(7px, 1.9cqw); color: var(--text-2); white-space: nowrap;
+}
+.sc-status {
+  margin-left: auto; width: 4.4cqw; height: 3.4cqw; display: grid; place-items: center;
+  border-radius: 0.9cqw; background: rgb(255 255 255 / 0.12); color: var(--text);
+}
+.sc-status svg { width: 2.8cqw; height: 2.8cqw; }
+.sc-floor, .sc-panel {
+  background: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.06) 1px, transparent 0) 0 0 / 3.4cqw 3.4cqw, var(--surface-2);
+}
+.sc-floor { left: 0; right: 0; top: 6.4cqw; bottom: 0; }
+.sc-panel { overflow: hidden; border: 1px solid var(--border); border-radius: 1.8cqw; }
+.sc-panel > * { position: absolute; }
+
+.t {
+  position: absolute; display: grid; place-items: center; text-align: center; overflow: hidden;
+  border-radius: 1.4cqw; color: #fff; opacity: 0.94;
+  background: linear-gradient(160deg, var(--tile-a), var(--tile-b));
+  box-shadow: var(--shadow-tile), 0 0 0 1px rgb(255 255 255 / 0.18) inset;
+  font-size: max(6.5px, 1.6cqw); line-height: 1.25;
+}
+.t b { display: block; font-weight: 650; }
+.t.main::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 8%; min-height: 3px;
+  background: rgb(255 255 255 / 0.92);
+}
+.cur { opacity: 0; position: absolute; left: 58%; top: 50%; width: 3cqw; height: 4.2cqw; }
+.cur path { fill: var(--text); stroke: var(--bg); stroke-width: 1.3; stroke-linejoin: round; }
+
+.m {
+  padding: 0.9cqw; border-radius: 1.8cqw; background: rgb(28 31 40 / 0.94);
+  border: 1px solid rgb(255 255 255 / 0.1); box-shadow: 0 24px 60px -18px rgb(0 0 0 / 0.85);
+  font-size: max(6.5px, 1.9cqw); transform-origin: 100% 0;
+}
+.m-h { margin: 0; padding: 0.8cqw 1.6cqw 0.6cqw 4.4cqw; font-size: 0.85em; font-weight: 600; color: var(--text-3); white-space: nowrap; }
+.m-r {
+  position: relative; display: flex; align-items: center; height: 5cqw; padding: 0 1.6cqw 0 4.4cqw;
+  border-radius: 1cqw; color: var(--text); white-space: nowrap;
+}
+.m-r.dim { color: var(--text-2); }
+.m-r .k { margin-left: auto; padding-left: 2.4cqw; color: inherit; opacity: 0.6; }
+.m-r .chk { position: absolute; left: 1.6cqw; font-style: normal; font-weight: 700; opacity: 0; }
+.m hr { border: 0; height: 1px; margin: 0.8cqw 1.2cqw; background: rgb(255 255 255 / 0.1); }
+
+.key {
+  display: grid; place-items: center; width: 11cqw; height: 11cqw; border-radius: 1.6cqw;
+  background: var(--surface-2); border: 1px solid var(--accent); color: var(--accent);
+  font: 600 5cqw/1 var(--font-mono); box-shadow: 0 0.8cqw 0 var(--border);
+}
+
+/* 1. Arrange your displays: the Built-in tile is dragged under the Studio Display */
+
+.s1 { --d: 7s; }
+.s1 .ta { left: 24cqw; top: 14cqw; width: 30cqw; height: 17cqw; }
+.s1 .tb { left: 28.5cqw; top: 31cqw; width: 21cqw; height: 13.6cqw; }
+
+/* 2. Save it as a layout: the menu opens, Save is chosen, a name is typed */
+
+.s2 { --d: 8s; }
+.s2 .ta { left: 20cqw; top: 14cqw; width: 26cqw; height: 14.6cqw; }
+.s2 .tb { left: 24.5cqw; top: 29cqw; width: 17cqw; height: 11cqw; }
+.s2 .sc-status { background: rgb(255 255 255 / 0.2); }
+.s2 .m { right: 3cqw; top: 7.4cqw; width: 46cqw; opacity: 0; }
+.dlg {
+  left: 22cqw; top: 13cqw; width: 56cqw; padding: 2.6cqw 2.8cqw; border-radius: 2cqw;
+  background: rgb(28 31 40 / 0.96); border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow: 0 30px 70px -20px rgb(0 0 0 / 0.9); font-size: max(6.5px, 1.9cqw);
+}
+.dlg p { margin: 0; }
+.dlg .d-t { font-weight: 650; font-size: 1.1em; }
+.dlg .d-s { margin-top: 0.4cqw; color: var(--text-3); font-size: 0.9em; }
+.dlg .d-f { margin-top: 2cqw; padding: 1.4cqw 1.6cqw; border-radius: 1cqw; background: var(--surface); border: 1px solid var(--accent); }
+.dlg .d-txt { position: relative; display: inline-block; }
+.dlg .cover { position: absolute; inset: 0; background: var(--surface); transform-origin: 100% 50%; transform: scaleX(0); }
+.dlg .d-b { display: flex; justify-content: flex-end; gap: 1.2cqw; margin-top: 2.2cqw; font-weight: 600; }
+.dlg .d-b span { padding: 0.9cqw 2.2cqw; border-radius: 99px; background: var(--surface-2); color: var(--text-2); }
+.dlg .d-b .d-save { background: var(--accent); color: var(--on-accent); }
+
+/* 3. Switch whenever you want: a row is chosen and the displays follow */
+
+.s3 { --d: 9s; }
+.s3 .ta { left: 12cqw; top: 20cqw; width: 24cqw; height: 13.5cqw; }
+.s3 .tb { left: 12cqw; top: 20cqw; width: 16cqw; height: 10.4cqw; transform-origin: 0 0; transform: scale(1.5, 1.298); opacity: 0.4; }
+.s3 .tb b { opacity: 0; }
+.s3 .m { right: 3cqw; top: 7.4cqw; width: 41cqw; }
+.s3 .r3 .chk { opacity: 1; }
+
+/* Shortcut: the keys go down, the displays rearrange */
+
+.s4 { --d: 7s; }
+.s4 .keys-row { left: 0; right: 0; top: 6cqw; display: flex; justify-content: center; gap: 2.2cqw; }
+.s4 .sc-panel { left: 14cqw; top: 26cqw; width: 72cqw; height: 32cqw; }
+.s4 .ta { left: 27cqw; top: 4cqw; width: 18cqw; height: 10.1cqw; }
+.s4 .tb { left: 30cqw; top: 14.6cqw; width: 12cqw; height: 7.8cqw; }
+.s4 .lbl { left: 2cqw; bottom: 1.6cqw; font-size: max(6.5px, 1.7cqw); color: var(--text-3); }
+
+/* Automatic: the plug connects, the saved layout applies */
+
+.s5 { --d: 8s; }
+.s5 .sc-panel { left: 6cqw; top: 6cqw; width: 88cqw; height: 36cqw; }
+.s5 .ta { left: 31cqw; top: 3.5cqw; width: 26cqw; height: 14.6cqw; }
+.s5 .tb { left: 35cqw; top: 18.1cqw; width: 18cqw; height: 11.7cqw; }
+.s5 .cab { left: 57cqw; top: 10.5cqw; width: 40cqw; height: 0.6cqw; background: var(--text-3); border-radius: 1cqw; }
+.s5 .cab::before {
+  content: ""; position: absolute; left: 0; top: 50%; width: 3.4cqw; height: 2.4cqw; margin-top: -1.2cqw;
+  border-radius: 0.7cqw; background: var(--text-2);
+}
+.sset {
+  left: 6cqw; right: 6cqw; top: 46cqw; height: 12cqw; display: flex; align-items: center; justify-content: space-between;
+  gap: 2cqw; padding: 0 2.4cqw; border-radius: 1.8cqw; background: var(--surface-2); border: 1px solid var(--border);
+  font-size: max(7px, 2cqw); white-space: nowrap;
+}
+.sset .sr { display: flex; align-items: center; gap: 1.4cqw; }
+.sset .sv { display: inline-flex; align-items: center; gap: 0.8cqw; padding: 0.9cqw 1.4cqw; border-radius: 1cqw; color: var(--text-2); }
+.sset .sv svg { width: 1.3cqw; height: 2.1cqw; stroke: var(--text-3); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.chip { display: inline-flex; align-items: center; gap: 0.8cqw; color: var(--success); font-weight: 600; font-size: 0.9em; }
+.chip i { width: 1.4cqw; height: 1.4cqw; border-radius: 50%; background: var(--success); }
+
+/* Editor: a tile is dragged, snaps to its neighbour, the checks turn green */
+
+.s6 { --d: 8s; }
+.s6 .sc-floor { right: auto; width: 66cqw; }
+.s6 .ta { left: 14cqw; top: 20cqw; width: 24cqw; height: 13.5cqw; }
+.s6 .tb { left: 38cqw; top: 23cqw; width: 16cqw; height: 10.4cqw; }
+.s6 .tb::after {
+  content: ""; position: absolute; inset: 0.3cqw; border: 0.25cqw dashed rgb(255 255 255 / 0.75);
+  border-radius: 1.1cqw; opacity: 0;
+}
+.s6 .snap { left: 37.8cqw; top: 20cqw; width: 0.4cqw; height: 13.5cqw; border-radius: 1cqw; background: var(--text); opacity: 0; }
+.insp {
+  left: 66cqw; right: 0; top: 6.4cqw; bottom: 0; padding: 2.4cqw 2.2cqw; background: var(--surface);
+  border-left: 1px solid var(--border); display: flex; flex-direction: column; gap: 2cqw; white-space: nowrap;
+}
+.insp .lab { color: var(--text-3); font-size: 0.85em; margin-bottom: 0.7cqw; }
+.insp .seg { display: flex; padding: 0.4cqw; gap: 0.4cqw; border-radius: 1.2cqw; background: var(--surface-2); border: 1px solid var(--border); }
+.insp .seg span { flex: 1; padding: 0.8cqw 0; text-align: center; border-radius: 0.9cqw; color: var(--text-3); }
+.insp .seg .on { background: var(--border); color: var(--text); }
+.insp .sel { padding: 1cqw 1.4cqw; border-radius: 1.1cqw; background: var(--surface-2); border: 1px solid var(--border); overflow: hidden; text-overflow: ellipsis; }
+.insp .checks { margin-top: auto; display: grid; gap: 1.3cqw; color: var(--text-2); font-size: 0.92em; }
+.insp .checks div { display: flex; align-items: center; gap: 1.2cqw; }
+.ck {
+  flex: none; width: 2.5cqw; height: 2.5cqw; display: grid; place-items: center; border-radius: 50%;
+  border: 0.25cqw solid var(--success); color: var(--success); font-size: 1.5cqw; font-style: normal; font-weight: 700;
+}
+
+/* Shortcuts app: an Open URLs action runs and the displays follow */
+
+.s7 { --d: 8s; }
+.s7 .card {
+  left: 8cqw; top: 6cqw; width: 84cqw; height: 26cqw; padding: 2.4cqw 2.8cqw; overflow: hidden;
+  border-radius: 2cqw; background: var(--surface-2); border: 1px solid var(--border);
+}
+.s7 .card-h { display: flex; align-items: center; gap: 1.6cqw; font-weight: 650; font-size: 1.15em; }
+.s7 .card-ic { width: 4.4cqw; height: 4.4cqw; display: grid; place-items: center; border-radius: 1.1cqw; background: var(--accent); color: var(--on-accent); }
+.s7 .card-ic svg { width: 2.6cqw; height: 2.6cqw; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.s7 .run { margin-left: auto; width: 5.4cqw; height: 5.4cqw; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--on-accent); }
+.s7 .run svg { width: 2.2cqw; height: 2.2cqw; fill: currentColor; margin-left: 0.3cqw; }
+.s7 .url {
+  margin-top: 2.2cqw; padding: 1.5cqw 1.8cqw; border-radius: 1.1cqw; background: var(--surface); border: 1px solid var(--border);
+  font: 500 max(6.5px, 1.75cqw)/1.3 var(--font-mono); color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.s7 .prog { left: 0; right: 0; bottom: 0; height: 0.6cqw; background: var(--accent); transform-origin: 0 50%; }
+.s7 .sc-panel { left: 8cqw; top: 36cqw; width: 84cqw; height: 22cqw; }
+.s7 .ta { left: 34cqw; top: 2.5cqw; width: 16cqw; height: 9cqw; }
+.s7 .tb { left: 36.5cqw; top: 11.5cqw; width: 11cqw; height: 7.1cqw; }
+
+/* Privacy: layouts stay in one file; nothing gets through to the network */
+
+.s8 { --d: 9s; }
+.s8 .win { left: 5cqw; top: 7cqw; width: 56cqw; height: 46cqw; overflow: hidden; border-radius: 1.8cqw; background: var(--surface-2); border: 1px solid var(--border); }
+.s8 .win-bar { position: absolute; left: 0; right: 0; top: 0; height: 5.6cqw; display: flex; align-items: center; padding: 0 2.4cqw; border-bottom: 1px solid var(--border); background: rgb(255 255 255 / 0.04); color: var(--text-2); font-size: max(7px, 1.9cqw); }
+.s8 .file { left: 28.5cqw; top: 18.5cqw; width: 9cqw; height: 11.7cqw; }
+.s8 .file .pg { fill: var(--surface); stroke: var(--text-3); stroke-width: 2; stroke-linejoin: round; }
+.s8 .file .ln { fill: none; stroke: var(--text-3); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.s8 .fname { left: 5cqw; width: 56cqw; top: 32.4cqw; text-align: center; font-size: max(7px, 2cqw); color: var(--text-2); }
+.s8 .okb { left: 35.4cqw; top: 27.4cqw; width: 4cqw; height: 4cqw; display: grid; place-items: center; border-radius: 50%; background: var(--success); color: var(--on-accent); font-size: 2.4cqw; font-weight: 800; border: 0.4cqw solid var(--surface-2); }
+.s8 .wall { left: 66cqw; top: 13cqw; height: 38cqw; border-left: 0.3cqw dashed var(--text-3); opacity: 0.35; }
+.s8 .pkt { left: 41cqw; top: 23.2cqw; width: 2.2cqw; height: 2.2cqw; border-radius: 50%; background: var(--accent); opacity: 0; }
+.s8 .cloud { left: 72cqw; top: 21cqw; width: 22cqw; height: 14cqw; fill: none; stroke: var(--text-3); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.s8 .net { left: 72cqw; width: 22cqw; top: 37cqw; text-align: center; font-size: max(7px, 1.9cqw); color: var(--text-3); }
+
+/* Motion. Everything below only runs when motion is welcome. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .scene *, .scene *::before, .scene *::after { animation-play-state: var(--play) !important; }
+  .stage { animation: sc-fade var(--d) linear infinite; }
+  @keyframes sc-fade { 0% { opacity: 0; } 5% { opacity: 1; } 92% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* 1 */
+  .s1 .tb { animation: s1-move var(--d) var(--io) infinite; }
+  .s1 .cur { animation: s1-cur var(--d) var(--ease) infinite; }
+  @keyframes s1-move { 0%, 20% { transform: translate(25.5cqw, -11cqw); } 54%, 100% { transform: translate(0, 0); } }
+  @keyframes s1-cur { 0%, 10% { opacity: 0; } 17%, 58% { opacity: 1; } 68%, 100% { opacity: 0; } }
+
+  /* 2 */
+  .s2 .m { animation: s2-menu var(--d) var(--ease) infinite; }
+  .s2 .m-r.save { animation: s2-save var(--d) var(--ease) infinite; }
+  .dlg { animation: s2-dlg var(--d) var(--ease) infinite; }
+  .dlg .cover { animation: s2-type var(--d) steps(20, end) infinite; }
+  .dlg .d-save { animation: s2-ok var(--d) var(--ease) infinite; }
+  @keyframes s2-menu {
+    0%, 8% { opacity: 0; transform: translateY(-1.2cqw) scale(0.97); }
+    16%, 36% { opacity: 1; transform: none; }
+    42%, 100% { opacity: 0; transform: translateY(-0.6cqw) scale(0.98); }
+  }
+  @keyframes s2-save { 0%, 21% { background-color: transparent; color: var(--text); } 25%, 100% { background-color: var(--accent); color: var(--on-accent); } }
+  @keyframes s2-dlg { 0%, 40% { opacity: 0; transform: translateY(-1.5cqw) scale(0.98); } 50%, 100% { opacity: 1; transform: none; } }
+  @keyframes s2-type { 0%, 54% { transform: scaleX(1); } 76%, 100% { transform: scaleX(0); } }
+  @keyframes s2-ok { 0%, 76% { background-color: var(--surface-2); color: var(--text-2); } 82%, 100% { background-color: var(--accent); color: var(--on-accent); } }
+
+  /* 3 */
+  .s3 .ta { animation: s3-a var(--d) var(--io) infinite; }
+  .s3 .tb { animation: s3-b var(--d) var(--io) infinite; }
+  .s3 .tb b { animation: s3-bt var(--d) var(--ease) infinite; }
+  .s3 .r2 { animation: s3-r2 var(--d) var(--ease) infinite; }
+  .s3 .r3 { animation: s3-r3 var(--d) var(--ease) infinite; }
+  .s3 .r1 .chk { animation: s3-c1 var(--d) var(--ease) infinite; }
+  .s3 .r2 .chk { animation: s3-c2 var(--d) var(--ease) infinite; }
+  .s3 .r3 .chk { animation: s3-c3 var(--d) var(--ease) infinite; }
+  @keyframes s3-a { 0%, 16% { transform: translate(-4cqw, -8cqw); } 30%, 56% { transform: translate(-8cqw, -2cqw); } 70%, 100% { transform: translate(0, 0); } }
+  @keyframes s3-b {
+    0%, 16% { transform: translate(0, 6cqw) scale(1, 1); opacity: 0.94; }
+    30%, 56% { transform: translate(16cqw, 0.5cqw) scale(1, 1); opacity: 0.94; }
+    70%, 100% { transform: translate(0, 0) scale(1.5, 1.298); opacity: 0.4; }
+  }
+  @keyframes s3-bt { 0%, 56% { opacity: 1; } 66%, 100% { opacity: 0; } }
+  @keyframes s3-r2 { 0%, 12% { background-color: transparent; color: var(--text); } 15%, 26% { background-color: var(--accent); color: var(--on-accent); } 32%, 100% { background-color: transparent; color: var(--text); } }
+  @keyframes s3-r3 { 0%, 52% { background-color: transparent; color: var(--text); } 55%, 66% { background-color: var(--accent); color: var(--on-accent); } 72%, 100% { background-color: transparent; color: var(--text); } }
+  @keyframes s3-c1 { 0%, 28% { opacity: 1; } 31%, 100% { opacity: 0; } }
+  @keyframes s3-c2 { 0%, 28% { opacity: 0; } 31%, 64% { opacity: 1; } 67%, 100% { opacity: 0; } }
+  @keyframes s3-c3 { 0%, 64% { opacity: 0; } 68%, 100% { opacity: 1; } }
+
+  /* 4 */
+  .s4 .key:nth-child(1) { animation: s4-k1 var(--d) var(--io) infinite; }
+  .s4 .key:nth-child(2) { animation: s4-k2 var(--d) var(--io) infinite; }
+  .s4 .key:nth-child(3) { animation: s4-k3 var(--d) var(--io) infinite; }
+  .s4 .key:nth-child(4) { animation: s4-k4 var(--d) var(--io) infinite; }
+  .s4 .ta { animation: s4-a var(--d) var(--io) infinite; }
+  .s4 .tb { animation: s4-b var(--d) var(--io) infinite; }
+  @keyframes s4-k1 {
+    0%, 11% { transform: none; box-shadow: 0 0.8cqw 0 var(--border); color: var(--text); border-color: var(--border); }
+    14%, 46% { transform: translateY(0.7cqw); box-shadow: 0 0.1cqw 0 var(--border); color: var(--accent); border-color: var(--accent); }
+    52%, 100% { transform: none; box-shadow: 0 0.8cqw 0 var(--border); color: var(--accent); border-color: var(--accent); }
+  }
+  @keyframes s4-k2 {
+    0%, 17% { transform: none; box-shadow: 0 0.8cqw 0 var(--border); color: var(--text); border-color: var(--border); }
+    20%, 46% { transform: translateY(0.7cqw); box-shadow: 0 0.1cqw 0 var(--border); color: var(--accent); border-color: var(--accent); }
+    52%, 100% { transform: none; box-shadow: 0 0.8cqw 0 var(--border); color: var(--accent); border-color: var(--accent); }
+  }
+  @keyframes s4-k3 {
+    0%, 23% { transform: none; box-shadow: 0 0.8cqw 0 var(--border); color: var(--text); border-color: var(--border); }
+    26%, 46% { transform: translateY(0.7cqw); box-shadow: 0 0.1cqw 0 var(--border); color: var(--accent); border-color: var(--accent); }
+    52%, 100% { transform: none; box-shadow: 0 0.8cqw 0 var(--border); color: var(--accent); border-color: var(--accent); }
+  }
+  @keyframes s4-k4 {
+    0%, 29% { transform: none; box-shadow: 0 0.8cqw 0 var(--border); color: var(--text); border-color: var(--border); }
+    32%, 46% { transform: translateY(0.7cqw); box-shadow: 0 0.1cqw 0 var(--border); color: var(--accent); border-color: var(--accent); }
+    52%, 100% { transform: none; box-shadow: 0 0.8cqw 0 var(--border); color: var(--accent); border-color: var(--accent); }
+  }
+  @keyframes s4-a { 0%, 33% { transform: translate(-6cqw, 4cqw); } 54%, 100% { transform: translate(0, 0); } }
+  @keyframes s4-b { 0%, 33% { transform: translate(9cqw, -5.1cqw); } 54%, 100% { transform: translate(0, 0); } }
+
+  /* 5 */
+  .s5 .ta { animation: s5-a var(--d) var(--io) infinite; }
+  .s5 .tb { animation: s5-b var(--d) var(--io) infinite; }
+  .s5 .cab { animation: s5-cab var(--d) var(--io) infinite; }
+  .s5 .sv { animation: s5-v var(--d) var(--ease) infinite; }
+  .s5 .chip { animation: s5-chip var(--d) var(--ease) infinite; }
+  @keyframes s5-a {
+    0%, 26% { transform: translate(11cqw, 2.5cqw); opacity: 0; }
+    34%, 48% { transform: translate(11cqw, 2.5cqw); opacity: 0.94; }
+    68%, 100% { transform: translate(0, 0); opacity: 0.94; }
+  }
+  @keyframes s5-b { 0%, 48% { transform: translate(-13cqw, -6.1cqw); } 68%, 100% { transform: translate(0, 0); } }
+  @keyframes s5-cab { 0%, 10% { transform: translate(33cqw, 2.5cqw); } 28%, 48% { transform: translate(11cqw, 2.5cqw); } 68%, 100% { transform: translate(0, 0); } }
+  @keyframes s5-v { 0%, 52% { background-color: transparent; } 58%, 72% { background-color: var(--hl); } 82%, 100% { background-color: transparent; } }
+  @keyframes s5-chip { 0%, 68% { opacity: 0; transform: translateX(-0.8cqw); } 76%, 100% { opacity: 1; transform: none; } }
+
+  /* 6 */
+  .s6 .tb { animation: s6-b var(--d) var(--io) infinite; }
+  .s6 .tb::after { animation: s6-dash var(--d) var(--ease) infinite; }
+  .s6 .cur { animation: s6-cur var(--d) var(--ease) infinite; }
+  .s6 .snap { animation: s6-snap var(--d) var(--ease) infinite; }
+  .s6 .ck.late { animation: s6-ck var(--d) var(--ease) infinite; }
+  @keyframes s6-b {
+    0%, 16% { transform: translate(8cqw, 17cqw) scale(1.03); }
+    40% { transform: translate(-0.8cqw, -0.3cqw) scale(1.03); }
+    46%, 100% { transform: translate(0, 0) scale(1); }
+  }
+  @keyframes s6-dash { 0%, 10% { opacity: 0; } 14%, 42% { opacity: 1; } 48%, 100% { opacity: 0; } }
+  @keyframes s6-cur { 0%, 8% { opacity: 0; } 13%, 52% { opacity: 1; } 60%, 100% { opacity: 0; } }
+  @keyframes s6-snap { 0%, 38% { opacity: 0; } 43%, 50% { opacity: 0.85; } 62%, 100% { opacity: 0; } }
+  @keyframes s6-ck { 0%, 46% { border-color: var(--text-3); color: transparent; } 54%, 100% { border-color: var(--success); color: var(--success); } }
+
+  /* 7 */
+  .s7 .run { animation: s7-run var(--d) var(--io) infinite; }
+  .s7 .prog { animation: s7-prog var(--d) var(--io) infinite; }
+  .s7 .url { animation: s7-url var(--d) var(--ease) infinite; }
+  .s7 .ta { animation: s7-a var(--d) var(--io) infinite; }
+  .s7 .tb { animation: s7-b var(--d) var(--io) infinite; }
+  @keyframes s7-run { 0%, 12% { transform: scale(1); } 16% { transform: scale(0.86); } 22%, 100% { transform: scale(1); } }
+  @keyframes s7-prog { 0%, 18% { transform: scaleX(0); } 40%, 100% { transform: scaleX(1); } }
+  @keyframes s7-url { 0%, 18% { background-color: var(--surface); } 24%, 40% { background-color: var(--hl); } 50%, 100% { background-color: var(--surface); } }
+  @keyframes s7-a { 0%, 38% { transform: translate(-10cqw, 4.5cqw); } 58%, 100% { transform: translate(0, 0); } }
+  @keyframes s7-b { 0%, 38% { transform: translate(3.5cqw, -3cqw); } 58%, 100% { transform: translate(0, 0); } }
+
+  /* 8 */
+  .s8 .pkt { animation: s8-pkt var(--d) var(--io) infinite; }
+  .s8 .wall { animation: s8-wall var(--d) var(--ease) infinite; }
+  .s8 .okb { animation: s8-ok var(--d) var(--ease) infinite; }
+  @keyframes s8-pkt {
+    0%, 8% { opacity: 0; transform: translateX(0); }
+    11% { opacity: 1; transform: translateX(0); }
+    26% { opacity: 1; transform: translateX(18cqw); }
+    29%, 40% { opacity: 0; transform: translateX(19cqw); }
+    40.1% { opacity: 0; transform: translateX(0); }
+    44% { opacity: 1; transform: translateX(0); }
+    59% { opacity: 1; transform: translateX(18cqw); }
+    62%, 100% { opacity: 0; transform: translateX(19cqw); }
+  }
+  @keyframes s8-wall { 0%, 24% { opacity: 0.35; } 28% { opacity: 1; } 34%, 57% { opacity: 0.35; } 61% { opacity: 1; } 68%, 100% { opacity: 0.35; } }
+  @keyframes s8-ok { 0%, 68% { opacity: 0; transform: scale(0.7); } 76%, 100% { opacity: 1; transform: scale(1); } }
+}

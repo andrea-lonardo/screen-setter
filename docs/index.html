@@ -12,6 +12,7 @@
   <link rel="icon" href="images/app-icon.png">
   <link rel="preload" href="fonts/Anton-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/scenes.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -25,7 +26,7 @@
         <a href="#faq">Questions</a>
         <a href="https://github.com/andrea-lonardo/screen-setter">GitHub</a>
       </nav>
-      <a class="btn btn-primary" href="#download">Download</a>
+      <a class="btn btn-primary" href="get/">Download</a>
     </div>
   </header>
 
@@ -36,7 +37,7 @@
           <h1 class="display">Your displays, set in one click.</h1>
           <p class="lead">Screen Setter remembers how your displays are arranged — side by side, stacked, or mirrored — and puts each arrangement back from the menu bar, with a keyboard shortcut, or automatically when the displays connect.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#download">Download for free</a>
+            <a class="btn btn-primary" href="get/">Download for free</a>
             <a class="btn btn-secondary" href="https://github.com/andrea-lonardo/screen-setter">View the source</a>
           </div>
           <p class="fineprint">For macOS 26 or later, on Apple silicon and Intel Macs. Open source, and it collects no data.</p>
@@ -73,10 +74,56 @@
     <section class="section" id="how" aria-labelledby="how-title">
       <div class="wrap">
         <h2 id="how-title">Arrange once. Switch anytime.</h2>
-        <ol class="steps">
-          <li><h3>Arrange your displays</h3><p>Set them up the way you like in System Settings › Displays.</p></li>
-          <li><h3>Save it as a layout</h3><p>Choose Save Current Arrangement… from the menu bar and give it a name. Save as many as you like.</p></li>
-          <li><h3>Switch whenever you want</h3><p>Pick a layout from the menu, press its shortcut, or let it apply on its own when those displays connect.</p></li>
+        <ol class="flow">
+          <li>
+            <div class="flow-text reveal"><h3>Arrange your displays</h3><p>Set them up the way you like in System Settings › Displays.</p></div>
+            <div class="scene s1 reveal" aria-hidden="true"><div class="stage">
+              <div class="sc-bar"><span>System Settings › Displays</span></div>
+              <div class="sc-floor"></div>
+              <div class="t main ta"><b>Studio Display</b></div>
+              <div class="t tb"><b>Built-in</b><svg class="cur" viewBox="0 0 16 22"><path d="M1 1v17l4.6-4.2 3 6.4 2.6-1.2-3-6.2H15z"/></svg></div>
+            </div></div>
+          </li>
+          <li>
+            <div class="flow-text reveal"><h3>Save it as a layout</h3><p>Choose Save Current Arrangement… from the menu bar and give it a name. Save as many as you like.</p></div>
+            <div class="scene s2 reveal" aria-hidden="true"><div class="stage">
+              <div class="sc-bar"><span>Built-in Display + Studio Display</span><span class="sc-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"><rect x="3" y="5" width="11" height="8" rx="2"/><rect x="10" y="11" width="11" height="8" rx="2"/></svg></span></div>
+              <div class="sc-floor"></div>
+              <div class="t main ta"><b>Studio Display</b></div>
+              <div class="t tb"><b>Built-in</b></div>
+              <div class="m">
+                <p class="m-h">Built-in Display + Studio Display</p>
+                <div class="m-r"><i class="chk" style="opacity:1">✓</i>Studio Display Above<span class="k">⌘1</span></div>
+                <div class="m-r">Side by Side<span class="k">⌘2</span></div>
+                <hr>
+                <div class="m-r dim">Undo<span class="k">⌘Z</span></div>
+                <div class="m-r save">Save Current Arrangement…</div>
+              </div>
+              <div class="dlg">
+                <p class="d-t">Save Current Arrangement</p>
+                <p class="d-s">Built-in Display + Studio Display</p>
+                <div class="d-f"><span class="d-txt"><span>Studio Display Above</span><i class="cover"></i></span></div>
+                <div class="d-b"><span>Cancel</span><span class="d-save">Save</span></div>
+              </div>
+            </div></div>
+          </li>
+          <li>
+            <div class="flow-text reveal"><h3>Switch whenever you want</h3><p>Pick a layout from the menu, press its shortcut, or let it apply on its own when those displays connect.</p></div>
+            <div class="scene s3 reveal" aria-hidden="true"><div class="stage">
+              <div class="sc-bar"><span>Built-in Display + Studio Display</span><span class="sc-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"><rect x="3" y="5" width="11" height="8" rx="2"/><rect x="10" y="11" width="11" height="8" rx="2"/></svg></span></div>
+              <div class="sc-floor"></div>
+              <div class="t main ta"><b>Studio Display</b></div>
+              <div class="t tb"><b>Built-in</b></div>
+              <div class="m">
+                <p class="m-h">Built-in Display + Studio Display</p>
+                <div class="m-r r1"><i class="chk">✓</i>Studio Display Above<span class="k">⌘1</span></div>
+                <div class="m-r r2"><i class="chk">✓</i>Side by Side<span class="k">⌘2</span></div>
+                <div class="m-r r3"><i class="chk">✓</i>Mirror for Presenting<span class="k">⌘3</span></div>
+                <hr>
+                <div class="m-r dim">Undo<span class="k">⌘Z</span></div>
+              </div>
+            </div></div>
+          </li>
         </ol>
       </div>
     </section>
@@ -87,47 +134,102 @@
         <p class="lead section-lead">A layout is a snapshot of a real arrangement: which display is where, which one has the menu bar, Extend or Mirror, and each display's resolution. Layouts are grouped by the exact displays they use, so the menu only shows what fits what's plugged in.</p>
 
         <div class="feature">
-          <div class="feature-text">
+          <div class="feature-text reveal">
             <h3>A keyboard shortcut for every layout</h3>
             <p>Shortcuts work in every app and don't need Accessibility permission. While the menu is open, ⌘1 to ⌘9 pick the first nine layouts, and Undo puts back the arrangement from just before.</p>
           </div>
-          <div class="keys" aria-label="Control, Option, Command, 1"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>⌘</kbd><kbd>1</kbd></div>
+          <div class="feature-visual"><div class="scene s4 reveal" aria-hidden="true"><div class="stage">
+            <div class="keys-row"><span class="key">⌃</span><span class="key">⌥</span><span class="key">⌘</span><span class="key">1</span></div>
+            <div class="sc-panel">
+              <div class="t main ta"><b>Studio Display</b></div>
+              <div class="t tb"><b>Built-in</b></div>
+              <span class="lbl">Studio Display Above</span>
+            </div>
+          </div></div></div>
         </div>
 
-        <div class="feature">
-          <div class="feature-text">
+        <div class="feature feature-flip">
+          <div class="feature-text reveal">
             <h3>Automatic, but careful</h3>
             <p>Choose one layout per set of displays to apply when they connect, when your Mac wakes, or when the app opens. It only acts when the exact same displays are back and the saved resolutions are still available, and it never undoes a change you just made by hand.</p>
           </div>
-          <div class="setting" aria-hidden="true">
-            <span>When these displays connect</span>
-            <span class="setting-value">Studio Display Above</span>
-          </div>
+          <div class="feature-visual"><div class="scene s5 reveal" aria-hidden="true"><div class="stage">
+            <div class="sc-panel">
+              <div class="t main ta"><b>Studio Display</b></div>
+              <div class="t tb"><b>Built-in</b></div>
+              <div class="cab"></div>
+            </div>
+            <div class="sset">
+              <span>When these displays connect</span>
+              <span class="sr"><span class="chip"><i></i>Applied</span><span class="sv">Studio Display Above<svg viewBox="0 0 8 13"><path d="M1 4.5 4 1.5l3 3M1 8.5l3 3 3-3"/></svg></span></span>
+            </div>
+          </div></div></div>
         </div>
 
         <div class="feature feature-wide">
-          <div class="feature-text">
+          <div class="feature-text reveal">
             <h3>Edit a layout without the displays</h3>
             <p>Drag displays into place, choose Extend or Mirror, the main display and each resolution, even while they're unplugged. Every edit is checked before it's saved: one main display, no overlaps, every display touching another.</p>
           </div>
-          <img class="shot" src="images/settings-dark.png" width="1720" height="1360" loading="lazy" alt="Screen Setter Settings listing three layouts for a built-in display and a Studio Display, one with a keyboard shortcut, plus the automatic layout setting">
+          <div class="feature-visual"><div class="scene s6 reveal" aria-hidden="true"><div class="stage">
+            <div class="sc-bar"><span>Studio Display Above</span></div>
+            <div class="sc-floor"></div>
+            <div class="t main ta"><b>Studio Display</b></div>
+            <div class="snap"></div>
+            <div class="t tb"><b>Built-in</b><svg class="cur" viewBox="0 0 16 22"><path d="M1 1v17l4.6-4.2 3 6.4 2.6-1.2-3-6.2H15z"/></svg></div>
+            <div class="insp">
+              <div><div class="lab">Arrangement</div><div class="seg"><span class="on">Extend</span><span>Mirror</span></div></div>
+              <div><div class="lab">Main display</div><div class="sel">Studio Display</div></div>
+              <div><div class="lab">Resolution</div><div class="sel">2560 × 1440</div></div>
+              <div class="checks">
+                <div><i class="ck">✓</i>One main display</div>
+                <div><i class="ck">✓</i>No overlaps</div>
+                <div><i class="ck late">✓</i>Every display touching</div>
+              </div>
+            </div>
+          </div></div></div>
         </div>
 
-        <div class="feature">
-          <div class="feature-text">
+        <div class="feature feature-flip">
+          <div class="feature-text reveal">
             <h3>Works with the Shortcuts app</h3>
             <p>Switch from Shortcuts, scripts or launchers with an Open URLs action. Links can only apply saved layouts; they can't change or delete anything.</p>
           </div>
-          <div class="code">screensetter://apply/Studio%20Display%20Above<button class="copy" type="button" data-copy="screensetter://apply/Studio%20Display%20Above">Copy</button></div>
+          <div class="feature-visual">
+            <div class="scene s7 reveal" aria-hidden="true"><div class="stage">
+              <div class="card">
+                <div class="card-h"><span class="card-ic"><svg viewBox="0 0 24 24"><path d="M10 14 20 4M14 4h6v6M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span>Open URLs<span class="run"><svg viewBox="0 0 10 12"><path d="M0 0v12l10-6z"/></svg></span></div>
+                <div class="url">screensetter://apply/Studio%20Display%20Above</div>
+                <div class="prog"></div>
+              </div>
+              <div class="sc-panel">
+                <div class="t main ta"><b>Studio</b></div>
+                <div class="t tb"><b>Built-in</b></div>
+              </div>
+            </div></div>
+            <div class="code">screensetter://apply/Studio%20Display%20Above<button class="copy" type="button" data-copy="screensetter://apply/Studio%20Display%20Above">Copy</button></div>
+          </div>
         </div>
 
         <div class="feature">
-          <div class="feature-text">
+          <div class="feature-text reveal">
             <h3>Nothing leaves your Mac</h3>
             <p>No accounts, analytics or tracking. The only thing the app asks the internet is whether there's a new version, and you can turn that off. Your layouts live in one file in your Library folder. <a href="privacy/">Read the privacy policy</a>.</p>
           </div>
-          <pre class="path" aria-label="Where layouts are stored">~/Library/Application Support/
+          <div class="feature-visual">
+            <div class="scene s8 reveal" aria-hidden="true"><div class="stage">
+              <div class="win"><div class="win-bar">Screen Setter</div></div>
+              <svg class="file" viewBox="0 0 40 52"><path class="pg" d="M4 2h22l10 10v36a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path class="ln" d="M26 2v10h10M11 24h18M11 31h18M11 38h11"/></svg>
+              <span class="okb">✓</span>
+              <div class="fname">library.json</div>
+              <div class="wall"></div>
+              <div class="pkt"></div>
+              <svg class="cloud" viewBox="0 0 64 40"><path d="M18 34h30a10 10 0 0 0 2-19.8A14 14 0 0 0 22 12a11 11 0 0 0-4 22zM8 38 56 2"/></svg>
+              <div class="net">Network</div>
+            </div></div>
+            <pre class="path" aria-label="Where layouts are stored">~/Library/Application Support/
   Screen Setter/library.json</pre>
+          </div>
         </div>
       </div>
     </section>
@@ -137,18 +239,10 @@
         <h2 id="download-title">Get Screen Setter. It's free.</h2>
         <p class="lead section-lead">Version 2.0, for macOS 26 or later on Apple silicon and Intel Macs.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="https://github.com/andrea-lonardo/screen-setter/releases/latest/download/Screen-Setter.zip">Download Screen-Setter.zip</a>
+          <a class="btn btn-primary" href="get/">Download</a>
           <a class="btn btn-secondary" href="https://github.com/andrea-lonardo/screen-setter/releases">All releases</a>
         </div>
-
-        <ol class="install">
-          <li><h3>Unzip and move it</h3><p>Move Screen Setter to your Applications folder, then open it.</p></li>
-          <li><h3>Allow it once</h3><p>macOS says it can't verify the app. Click Done, open System Settings › Privacy &amp; Security, and click <strong>Open Anyway</strong>.</p></li>
-          <li><h3>Confirm</h3><p>Click Open. From then on it opens normally and lives in your menu bar.</p></li>
-        </ol>
-
-        <p class="note">macOS asks because Screen Setter is free and isn't notarized by Apple, which needs a paid developer membership. To check that your download is the published one, compare its SHA-256 with the one on the release page:</p>
-        <div class="code">shasum -a 256 ~/Downloads/Screen-Setter.zip<button class="copy" type="button" data-copy='shasum -a 256 ~/Downloads/Screen-Setter.zip'>Copy</button></div>
+        <p class="note">Installing takes about a minute. The download page shows each step.</p>
       </div>
     </section>
 
@@ -158,7 +252,7 @@
         <div class="faq">
           <details>
             <summary>Why does macOS warn me the first time?</summary>
-            <p>Apple notarizes apps only for paid developer members. Screen Setter is free and open source, so it's signed without that membership. Follow the three steps above once. The source code is on GitHub if you'd like to check it or build it yourself.</p>
+            <p>Apple notarizes apps only for paid developer members. Screen Setter is free and open source, so it's signed without that membership. Follow <a href="get/">the three install steps</a> once. The source code is on GitHub if you'd like to check it or build it yourself.</p>
           </details>
           <details>
             <summary>What if a display goes dark after switching?</summary>
@@ -201,5 +295,6 @@
   </footer>
 
   <script src="assets/site.js" defer></script>
+  <script src="assets/scenes.js" defer></script>
 </body>
 </html>
