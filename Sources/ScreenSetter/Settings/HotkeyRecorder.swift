@@ -23,17 +23,20 @@ struct HotkeyRecorder: View {
                         }
                     )
                 )
-            if hotkey != nil, !isRecording {
-                Button {
-                    hotkey = nil
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.borderless)
-                .help("Clear Shortcut")
-                .accessibilityLabel("Clear Shortcut")
+            // Always laid out, so recorders in a list line up whether or not they have a shortcut.
+            let canClear = hotkey != nil && !isRecording
+            Button {
+                hotkey = nil
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundStyle(.secondary)
             }
+            .buttonStyle(.borderless)
+            .help("Clear Shortcut")
+            .accessibilityLabel("Clear Shortcut")
+            .opacity(canClear ? 1 : 0)
+            .disabled(!canClear)
+            .accessibilityHidden(!canClear)
         }
         .onChange(of: isRecording) { _, recording in
             liveModifiers = []

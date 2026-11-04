@@ -202,7 +202,7 @@ Setter tells you at launch.
 
 Screen Setter updates itself with [Sparkle](https://sparkle-project.org). The
 second time it opens, it asks whether to check for updates automatically; you can
-change that in **Settings › General › Updates** or use **Check for Updates…** in the
+change that in **Settings › About** or use **Check for Updates…** in the
 menu. Updates are signed, and Screen Setter verifies the signature before installing
 one.
 </details>
@@ -268,6 +268,7 @@ layouts:
 open -n "build/Screen Setter.app" --args --preview-settings
 open -n "build/Screen Setter.app" --args --preview-onboarding
 "build/Screen Setter.app/Contents/MacOS/Screen Setter" --render-settings /tmp/settings.png --dark
+"build/Screen Setter.app/Contents/MacOS/Screen Setter" --render-settings /tmp/shortcuts.png --pane shortcuts
 "build/Screen Setter.app/Contents/MacOS/Screen Setter" --render-onboarding /tmp/welcome.png
 ```
 

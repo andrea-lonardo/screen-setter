@@ -59,8 +59,9 @@ final class SettingsWindowController: NSWindowController {
     }
 
     /// Renders the window content to a PNG (used by `--render-settings` for docs).
-    func render(to url: URL) throws {
+    func render(to url: URL, selecting item: SidebarItem? = nil) throws {
         guard let window else { throw SettingsRenderError.unavailable }
+        if let item { navigation.selection = item }
         try WindowRenderer.render(window, to: url)
     }
 }

@@ -4,12 +4,6 @@ import SwiftUI
 struct GeneralPane: View {
     let model: AppModel
 
-    @State private var copied = false
-
-    private var exampleURL: String {
-        AppInfo.applyURL(forLayoutNamed: model.library.layouts.first?.name ?? "Desk")
-    }
-
     var body: some View {
         Form {
             Section("Startup") {
@@ -17,26 +11,6 @@ struct GeneralPane: View {
                     get: { model.launchAtLogin },
                     set: { model.launchAtLogin = $0 }
                 ))
-                LabeledContent {
-                    Button("Show Welcome Window…") { model.showOnboarding() }
-                } label: {
-                    Text("Welcome window")
-                    Text("A quick introduction to saving and switching layouts.")
-                }
-            }
-
-            Section("Updates") {
-                Toggle("Check for updates automatically", isOn: Binding(
-                    get: { model.updates.checksAutomatically },
-                    set: { model.updates.checksAutomatically = $0 }
-                ))
-                LabeledContent {
-                    Button("Check Now") { model.updates.checkForUpdates() }
-                        .disabled(!model.updates.canCheckForUpdates)
-                } label: {
-                    Text("Updates")
-                    Text("With automatic checks on, Screen Setter asks its website once a day whether a new version exists. Only the app’s version is sent.")
-                }
             }
 
             Section("Displays") {
@@ -48,33 +22,57 @@ struct GeneralPane: View {
                 }
             }
 
+            Section("Help") {
+                LabeledContent {
+                    Button("Show Welcome Window…") { model.showOnboarding() }
+                } label: {
+                    Text("Welcome window")
+                    Text("A quick introduction to saving and switching layouts.")
+                }
+            }
+        }
+        .formStyle(.grouped)
+    }
+}
+
+struct AboutPane: View {
+    let model: AppModel
+
+    var body: some View {
+        Form {
             Section {
-                LabeledContent {
-                    EmptyView()
-                } label: {
-                    Text("Keyboard shortcuts")
-                    Text("Give any layout a shortcut in its editor. Shortcuts work in every app.")
+                HStack(spacing: 14) {
+                    Image(nsImage: NSApp.applicationIconImage)
+                        .resizable()
+                        .frame(width: 56, height: 56)
+                        .accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Screen Setter")
+                            .font(.title3.weight(.semibold))
+                        Text(AppInfo.version)
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                    }
                 }
+                .padding(.vertical, 4)
+                .accessibilityElement(children: .combine)
+            }
+
+            Section("Updates") {
+                Toggle("Check for updates automatically", isOn: Binding(
+                    get: { model.updates.checksAutomatically },
+                    set: { model.updates.checksAutomatically = $0 }
+                ))
                 LabeledContent {
-                    Button(copied ? "Copied" : "Copy") { copy(exampleURL) }
-                        .help("Copy the URL")
+                    Button("Check Now") { model.updates.checkForUpdates() }
+                        .disabled(!model.updates.canCheckForUpdates)
                 } label: {
-                    Text("Apply with a URL")
-                    Text("Open a link like this from Shortcuts, scripts or other apps to switch layouts:")
-                    Text(exampleURL)
-                        .font(.callout.monospaced())
-                        .foregroundStyle(.primary)
-                        .textSelection(.enabled)
+                    Text("Check for updates")
+                    Text("With automatic checks on, Screen Setter asks its website once a day whether a new version exists. Only the app’s version is sent.")
                 }
-            } header: {
-                Text("Shortcuts & Automation")
-            } footer: {
-                Text("In the URL, use the layout’s name with spaces and special characters percent-encoded, as in the example.")
-                    .foregroundStyle(.secondary)
             }
 
             Section {
-                LabeledContent("Version", value: AppInfo.version.replacingOccurrences(of: "Version ", with: ""))
                 LabeledContent("Source code") {
                     Link("GitHub", destination: AppInfo.repositoryURL)
                 }
@@ -88,23 +86,11 @@ struct GeneralPane: View {
                         Text("MIT License")
                     }
                 }
-            } header: {
-                Text("About")
             } footer: {
                 Text("Screen Setter is free and open source, provided as is, without warranty of any kind. Updates use Sparkle, under the MIT License. Mac and macOS are trademarks of Apple Inc., registered in the U.S. and other countries and regions.")
                     .foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)
-    }
-
-    private func copy(_ string: String) {
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(string, forType: .string)
-        copied = true
-        Task {
-            try? await Task.sleep(for: .seconds(1.5))
-            copied = false
-        }
     }
 }

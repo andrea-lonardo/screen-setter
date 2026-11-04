@@ -1,8 +1,27 @@
 import SwiftUI
 
 enum SidebarItem: Hashable {
-    case general
     case group(String)
+    case general
+    case shortcuts
+    case automation
+    case about
+
+    /// The settings panes, in sidebar order.
+    static let settingsPanes: [SidebarItem] = [.general, .shortcuts, .automation, .about]
+
+    var isSettingsPane: Bool { Self.settingsPanes.contains(self) }
+
+    /// Pane names accepted by `--render-settings … --pane <name>`.
+    init?(paneName: String) {
+        switch paneName.lowercased() {
+        case "general": self = .general
+        case "shortcuts": self = .shortcuts
+        case "automation": self = .automation
+        case "about": self = .about
+        default: return nil
+        }
+    }
 }
 
 /// Navigation state shared between the window controller and the SwiftUI views.
@@ -26,14 +45,17 @@ struct SettingsRootView: View {
         }
         .navigationTitle("Screen Setter")
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button {
-                    navigation.isSavingCurrentArrangement = true
-                } label: {
-                    Label("Save Current Arrangement…", systemImage: "plus")
+            // Saving belongs to the layout library, not to the settings panes.
+            if navigation.selection?.isSettingsPane != true {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        navigation.isSavingCurrentArrangement = true
+                    } label: {
+                        Label("Save Current Arrangement…", systemImage: "plus")
+                    }
+                    .help("Save Current Arrangement…")
+                    .disabled(model.isBusy)
                 }
-                .help("Save Current Arrangement…")
-                .disabled(model.isBusy)
             }
         }
         .sheet(isPresented: $navigation.isSavingCurrentArrangement) {
@@ -49,6 +71,12 @@ struct SettingsRootView: View {
         switch navigation.selection {
         case .general:
             GeneralPane(model: model)
+        case .shortcuts:
+            ShortcutsPane(model: model)
+        case .automation:
+            AutomationPane(model: model)
+        case .about:
+            AboutPane(model: model)
         case .group(let id):
             if let group = model.groups.first(where: { $0.id == id }) {
                 GroupDetailView(model: model, group: group)
@@ -80,7 +108,7 @@ struct SettingsRootView: View {
     /// display set, else the first one, else nothing (the empty state).
     private func validateSelection() {
         switch navigation.selection {
-        case .general:
+        case let item? where item.isSettingsPane:
             return
         case .group(let id) where model.groups.contains(where: { $0.id == id }):
             return
@@ -101,11 +129,19 @@ struct SettingsSidebar: View {
 
     var body: some View {
         List(selection: $selection) {
-            Label("General", systemImage: "gearshape")
-                .tag(SidebarItem.general)
-
             if !model.groups.isEmpty {
                 displaySets
+            }
+
+            Section("Settings") {
+                Label("General", systemImage: "gearshape")
+                    .tag(SidebarItem.general)
+                Label("Shortcuts", systemImage: "command")
+                    .tag(SidebarItem.shortcuts)
+                Label("Automation", systemImage: "bolt")
+                    .tag(SidebarItem.automation)
+                Label("About", systemImage: "info.circle")
+                    .tag(SidebarItem.about)
             }
         }
         .listStyle(.sidebar)
@@ -121,7 +157,7 @@ struct SettingsSidebar: View {
     }
 
     private var displaySets: some View {
-        Section("Display Sets") {
+        Section("Layouts") {
             ForEach(model.groups) { group in
                 GroupSidebarRow(model: model, group: group)
                     .tag(SidebarItem.group(group.id))

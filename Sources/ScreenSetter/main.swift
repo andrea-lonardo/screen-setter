@@ -116,11 +116,19 @@ struct ScreenSetterApplication {
         for flag in ["--render-settings", "--render-onboarding"] {
             guard let index = arguments.firstIndex(of: flag) else { continue }
             guard index + 1 < arguments.count, !arguments[index + 1].hasPrefix("--") else {
-                fputs("Usage: Screen Setter \(flag) /path/to/output.png [--dark]\n", stderr)
+                fputs("Usage: Screen Setter \(flag) /path/to/output.png [--dark] [--pane general|shortcuts|automation|about]\n", stderr)
                 exit(2)
             }
+            var pane: SidebarItem?
+            if let paneIndex = arguments.firstIndex(of: "--pane") {
+                guard paneIndex + 1 < arguments.count, let item = SidebarItem(paneName: arguments[paneIndex + 1]) else {
+                    fputs("--pane takes general, shortcuts, automation or about.\n", stderr)
+                    exit(2)
+                }
+                pane = item
+            }
             render(onboarding: flag == "--render-onboarding",
-                   to: URL(fileURLWithPath: arguments[index + 1]), dark: arguments.contains("--dark"))
+                   to: URL(fileURLWithPath: arguments[index + 1]), dark: arguments.contains("--dark"), pane: pane)
             return
         }
 
@@ -138,7 +146,7 @@ struct ScreenSetterApplication {
     /// Renders Settings or the welcome window with isolated sample data; never
     /// reads or changes real displays.
     @MainActor
-    private static func render(onboarding: Bool, to url: URL, dark: Bool) {
+    private static func render(onboarding: Bool, to url: URL, dark: Bool, pane: SidebarItem? = nil) {
         let application = NSApplication.shared
         application.setActivationPolicy(.prohibited)
         application.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
@@ -156,7 +164,7 @@ struct ScreenSetterApplication {
             if onboarding {
                 try OnboardingWindowController(model: model).render(to: url)
             } else {
-                try SettingsWindowController(model: model).render(to: url)
+                try SettingsWindowController(model: model).render(to: url, selecting: pane)
             }
             print("Rendered \(onboarding ? "the welcome window" : "Settings") with isolated sample data to \(url.path).")
         } catch {
