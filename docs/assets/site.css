@@ -249,8 +249,13 @@ button.menu-row:hover kbd, button.menu-row:focus-visible kbd, button.menu-row.is
   padding: var(--s-4) var(--s-5); border-radius: var(--r-md);
   background: var(--surface); border: 1px solid var(--border); font-size: 15px;
 }
-.setting-value { color: var(--text-2); }
-.setting-value::after { content: "⌃⌄"; display: inline-block; margin-left: var(--s-2); font-size: 11px; letter-spacing: -0.25em; writing-mode: vertical-lr; color: var(--text-3); }
+.setting-value { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; color: var(--text-2); }
+/* The up/down chevrons of a macOS pop-up button. */
+.setting-value::after {
+  content: ""; flex: none; width: 8px; height: 13px; background: var(--text-3);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 4.5 4 1.5l3 3M1 8.5l3 3 3-3'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 4.5 4 1.5l3 3M1 8.5l3 3 3-3'/%3E%3C/svg%3E") center / contain no-repeat;
+}
 
 .code {
   position: relative; margin: 0; padding: var(--s-4) var(--s-5); padding-right: 92px;
