@@ -73,8 +73,12 @@ struct AboutPane: View {
                     get: { model.updates.checksAutomatically },
                     set: { model.updates.checksAutomatically = $0 }
                 ))
-                LabeledContent("Release notes") {
-                    Link("View on GitHub", destination: AppInfo.releasesURL)
+                LabeledContent("What’s new in \(WhatsNew.currentKey)") {
+                    if WhatsNew.currentFeatures != nil {
+                        Button("Show…") { model.showWhatsNew() }
+                    } else {
+                        Link("Release Notes", destination: AppInfo.releasesURL)
+                    }
                 }
             } header: {
                 // Matches the other panes' headers; the header-only section above changes the default.

@@ -113,6 +113,15 @@ struct ScreenSetterApplication {
     static func main() {
         let arguments = CommandLine.arguments
 
+        if let index = arguments.firstIndex(of: "--render-whats-new") {
+            guard index + 1 < arguments.count, !arguments[index + 1].hasPrefix("--") else {
+                fputs("Usage: Screen Setter --render-whats-new /path/to/output.png [--dark]\n", stderr)
+                exit(2)
+            }
+            renderWhatsNew(to: URL(fileURLWithPath: arguments[index + 1]), dark: arguments.contains("--dark"))
+            return
+        }
+
         for flag in ["--render-settings", "--render-onboarding"] {
             guard let index = arguments.firstIndex(of: flag) else { continue }
             guard index + 1 < arguments.count, !arguments[index + 1].hasPrefix("--") else {
@@ -167,6 +176,25 @@ struct ScreenSetterApplication {
                 try SettingsWindowController(model: model).render(to: url, selecting: pane)
             }
             print("Rendered \(onboarding ? "the welcome window" : "Settings") with isolated sample data to \(url.path).")
+        } catch {
+            fputs("\(error.localizedDescription)\n", stderr)
+            exit(1)
+        }
+    }
+
+    @MainActor
+    private static func renderWhatsNew(to url: URL, dark: Bool) {
+        let application = NSApplication.shared
+        application.setActivationPolicy(.prohibited)
+        application.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
+        application.finishLaunching()
+        guard let features = WhatsNew.currentFeatures else {
+            fputs("This version has no What’s New.\n", stderr)
+            exit(1)
+        }
+        do {
+            try WhatsNewWindowController(features: features).render(to: url)
+            print("Rendered What’s New to \(url.path).")
         } catch {
             fputs("\(error.localizedDescription)\n", stderr)
             exit(1)

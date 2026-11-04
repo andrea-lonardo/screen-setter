@@ -231,3 +231,47 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         model.completeOnboarding()
     }
 }
+
+/// Shows the highlights of the current feature release.
+@MainActor
+final class WhatsNewWindowController: NSWindowController {
+    init(features: [WhatsNew.Feature]) {
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 520, height: 560),
+            styleMask: [.titled, .closable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+        super.init(window: window)
+
+        let root = WhatsNewView(features: features) { [weak window] in window?.close() }
+        let hosting = NSHostingController(rootView: root)
+        hosting.sizingOptions = [.preferredContentSize]
+        window.contentViewController = hosting
+        window.title = "What’s New in Screen Setter"
+        window.titleVisibility = .hidden
+        window.titlebarAppearsTransparent = true
+        window.isMovableByWindowBackground = true
+        window.isReleasedWhenClosed = false
+        window.isRestorable = false
+        window.tabbingMode = .disallowed
+        window.collectionBehavior.insert(.fullScreenNone)
+        window.layoutIfNeeded()
+        window.center()
+    }
+
+    required init?(coder: NSCoder) { nil }
+
+    func show() {
+        NSApp.activate()
+        showWindow(nil)
+        window?.makeKeyAndOrderFront(nil)
+    }
+
+    /// Renders the window to a PNG (used by `--render-whats-new`).
+    func render(to url: URL) throws {
+        guard let window else { throw SettingsRenderError.unavailable }
+        window.layoutIfNeeded()
+        try WindowRenderer.render(window, to: url)
+    }
+}

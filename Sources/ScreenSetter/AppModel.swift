@@ -42,6 +42,7 @@ final class AppModel {
     @ObservationIgnored private var settingsController: SettingsWindowController?
     @ObservationIgnored private var onboardingController: OnboardingWindowController?
     @ObservationIgnored private var hasEvaluatedOnboarding = false
+    @ObservationIgnored private var whatsNewController: WhatsNewWindowController?
     /// Bumped when the login item changes so `launchAtLogin` readers re-render.
     private var loginItemRevision = 0
     @ObservationIgnored private var previewLaunchAtLogin = false
@@ -299,6 +300,28 @@ extension AppModel {
         if alert.runModal() == .alertFirstButtonReturn { openSettings() }
     }
 
+    private static let lastSeenWhatsNewKey = "LastSeenWhatsNewVersion"
+
+    /// Shows What's New once per feature release, after an update.
+    func showWhatsNewIfNeeded() {
+        guard !isPreview, WhatsNew.currentFeatures != nil,
+              UserDefaults.standard.string(forKey: Self.lastSeenWhatsNewKey) != WhatsNew.currentKey else { return }
+        markWhatsNewSeen()
+        showWhatsNew()
+    }
+
+    func showWhatsNew() {
+        guard let features = WhatsNew.currentFeatures else { return }
+        let controller = whatsNewController ?? WhatsNewWindowController(features: features)
+        whatsNewController = controller
+        controller.show()
+    }
+
+    private func markWhatsNewSeen() {
+        guard !isPreview else { return }
+        UserDefaults.standard.set(WhatsNew.currentKey, forKey: Self.lastSeenWhatsNewKey)
+    }
+
     func showOnboarding() {
         let controller = onboardingController ?? OnboardingWindowController(model: self)
         onboardingController = controller
@@ -443,7 +466,12 @@ private extension AppModel {
         guard !hasEvaluatedOnboarding else { return }
         hasEvaluatedOnboarding = true
         let current = store.library // Includes any 1.x profiles migrated by the first refresh.
-        guard !current.hasCompletedOnboarding else { return }
+        guard !current.hasCompletedOnboarding else {
+            showWhatsNewIfNeeded()
+            return
+        }
+        // New and migrated people get the welcome window instead of What's New.
+        markWhatsNewSeen()
         if current.layouts.isEmpty {
             showOnboarding()
         } else {
