@@ -128,21 +128,21 @@
 
 .cursor { position: absolute; left: 0; top: 0; width: 3.4cqw; height: auto; opacity: 0; z-index: 5; filter: drop-shadow(0 0.3cqw 0.4cqw rgb(0 0 0 / 0.5)); }
 
-/* A: the zip becomes the app, and the app moves from Downloads to Applications */
+/* A: the disk image window; the app is dragged onto Applications */
 
-.a-win { top: 6cqw; width: 44cqw; height: 50cqw; }
-.a-down { left: 3cqw; }
-.a-apps { left: 52cqw; width: 45cqw; }
-.a-item { position: absolute; top: 18cqw; display: flex; flex-direction: column; align-items: center; gap: 0.8cqw; text-align: center; }
+.a-win { left: 8cqw; top: 5cqw; width: 84cqw; height: 52cqw; background: #eef1f5; border-color: #cfd5de; }
+.a-win .win-bar { background: #e1e5ec; border-bottom-color: #cfd5de; }
+.a-win .win-bar b { color: #4a5160; }
+.a-item { position: absolute; top: 17cqw; width: 20cqw; display: flex; flex-direction: column; align-items: center; gap: 1cqw; text-align: center; color: #1d2230; }
 .a-item span { font-size: 2cqw; white-space: nowrap; }
-.a-zip, .a-app { left: 14cqw; width: 22cqw; }
-.a-landed, .a-ph { width: 15cqw; }
-.a-landed { left: 81cqw; }
-.a-item svg { width: 9cqw; height: 10.5cqw; }
-.a-item img { width: 11.5cqw; height: 11.5cqw; }
-.a-ph i { width: 11.5cqw; height: 11.5cqw; border-radius: 2.6cqw; background: var(--c); opacity: 0.85; }
-.a-sel { position: absolute; left: 14cqw; top: 17cqw; width: 22cqw; height: 17cqw; border-radius: 1.6cqw; background: rgb(61 155 255 / 0.28); opacity: 0; }
-.a-zip, .a-app { opacity: 0; }
+.a-src { left: 20cqw; }
+.a-dst { left: 60cqw; }
+.a-src img { width: 14cqw; height: 14cqw; }
+.a-dst svg { width: 16cqw; height: 13cqw; margin: 0.5cqw 0 0.5cqw; }
+.a-arrow { position: absolute; left: 44cqw; top: 22cqw; width: 12cqw; height: 6cqw; color: #aab3c2; }
+.a-hl { position: absolute; left: 59cqw; top: 15.5cqw; width: 22cqw; height: 21cqw; border-radius: 1.6cqw; background: rgb(61 155 255 / 0.22); box-shadow: 0 0 0 0.3cqw rgb(61 155 255 / 0.55) inset; }
+.a-ghost { position: absolute; left: 23cqw; top: 17cqw; width: 14cqw; height: 14cqw; opacity: 0; }
+.a-cursor { opacity: 1; transform: translate(70cqw, 26cqw); }
 
 /* B: the "not opened" dialog, then System Settings > Privacy & Security */
 
@@ -197,10 +197,9 @@
   .js .scene:not(.is-live) .an { animation-play-state: paused; }
   .stage { animation-name: stage; animation-timing-function: linear; }
 
-  .a-sel { animation-name: a-sel; }
-  .a-zip { animation-name: a-zip; }
-  .a-app { animation-name: a-app; }
-  .a-landed { animation-name: a-landed; }
+  .a-hl { animation-name: a-hl; }
+  .a-dst { animation-name: a-dst; }
+  .a-ghost { animation-name: a-ghost; }
   .a-cursor { animation-name: a-cursor; }
   .b-dlg { animation-name: b-dlg; }
   .b-done { animation-name: press-b-done; }
@@ -216,37 +215,23 @@
 
 @keyframes stage { 0% { opacity: 0; } 4% { opacity: 1; } 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
 
-@keyframes a-sel { 0%, 15.5% { opacity: 0; } 16.5%, 23% { opacity: 1; } 27%, 100% { opacity: 0; } }
-@keyframes a-zip {
-  0%, 22% { opacity: 1; transform: scale(1); }
-  27%, 100% { opacity: 0; transform: scale(0.88); }
-}
-@keyframes a-app {
-  0%, 22% { opacity: 0; transform: translate(0, 0) scale(0.85); }
-  28%, 41% { opacity: 1; transform: translate(0, 0) scale(1); }
-  43% { opacity: 1; transform: translate(0, 0) scale(1.05); }
-  68% { opacity: 1; transform: translate(63.5cqw, 0) scale(1.05); }
-  71% { opacity: 1; transform: translate(63.5cqw, 0) scale(1); }
-  72%, 100% { opacity: 0; transform: translate(63.5cqw, 0) scale(1); }
-}
-@keyframes a-landed {
-  0%, 69% { opacity: 0; transform: scale(0.85); }
-  74% { opacity: 1; transform: scale(1.08); }
-  79%, 100% { opacity: 1; transform: scale(1); }
+@keyframes a-hl { 0%, 50% { opacity: 0; } 56%, 78% { opacity: 1; } 86%, 100% { opacity: 0; } }
+@keyframes a-dst { 0%, 62% { transform: scale(1); } 67% { transform: scale(1.07); } 74%, 100% { transform: scale(1); } }
+@keyframes a-ghost {
+  0%, 17% { opacity: 0; transform: translate(0, 0) scale(1); }
+  19%, 24% { opacity: 0.6; transform: translate(0, 0) scale(1.04); }
+  58% { opacity: 0.6; transform: translate(40cqw, 0) scale(1.04); }
+  66%, 100% { opacity: 0; transform: translate(40cqw, 0) scale(0.3); }
 }
 @keyframes a-cursor {
-  0% { opacity: 0; transform: translate(60cqw, 50cqw) scale(1); }
-  5% { opacity: 1; transform: translate(60cqw, 50cqw) scale(1); }
-  15% { opacity: 1; transform: translate(25cqw, 24cqw) scale(1); }
-  16.5% { transform: translate(25cqw, 24cqw) scale(0.85); }
-  18% { transform: translate(25cqw, 24cqw) scale(1); }
-  19.5% { transform: translate(25cqw, 24cqw) scale(0.85); }
-  21%, 40% { transform: translate(25cqw, 24cqw) scale(1); }
-  42% { transform: translate(25cqw, 24cqw) scale(0.88); }
-  68% { transform: translate(88.5cqw, 24cqw) scale(0.88); }
-  70% { opacity: 1; transform: translate(88.5cqw, 24cqw) scale(1); }
-  82% { opacity: 1; transform: translate(78cqw, 47cqw) scale(1); }
-  92%, 100% { opacity: 0; transform: translate(78cqw, 47cqw) scale(1); }
+  0% { opacity: 0; transform: translate(62cqw, 52cqw) scale(1); }
+  5% { opacity: 1; transform: translate(62cqw, 52cqw) scale(1); }
+  16% { opacity: 1; transform: translate(30cqw, 25cqw) scale(1); }
+  18.5%, 24% { transform: translate(30cqw, 25cqw) scale(0.86); }
+  58% { transform: translate(70cqw, 26cqw) scale(0.86); }
+  62% { opacity: 1; transform: translate(70cqw, 26cqw) scale(1); }
+  78% { opacity: 1; transform: translate(80cqw, 48cqw) scale(1); }
+  92%, 100% { opacity: 0; transform: translate(80cqw, 48cqw) scale(1); }
 }
 
 @keyframes b-dlg {
