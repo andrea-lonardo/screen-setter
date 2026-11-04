@@ -92,6 +92,7 @@ Screen Setter collects no data from anyone, including children.
 
 ## Changes and contact
 
-Changes to this policy are published in this file, with the history visible in
-the repository. Questions are welcome in
+Screen Setter is made by Andrea Lonardo, an individual developer, who is
+responsible for this policy. Changes to this policy are published in this file,
+with the history visible in the repository. Questions are welcome in
 [GitHub Issues](https://github.com/andrea-lonardo/screen-setter/issues).
