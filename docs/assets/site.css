@@ -314,3 +314,8 @@ button.menu-row:hover kbd, button.menu-row:focus-visible kbd, button.menu-row.is
 .page code { font-size: 0.9em; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 1px 6px; color: var(--text); }
 .page ul { padding-left: 1.2em; }
 .page li { margin-bottom: var(--s-2); }
+
+/* Hero headline: "Your displays," over "set in one click.", the two key words in the accent. */
+.hero-title > span { display: block; white-space: nowrap; }
+.hero .hero-title { font-size: clamp(40px, 6.6vw, 96px); }
+.hero-title em { font-style: normal; color: var(--accent); }
