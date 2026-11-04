@@ -3,6 +3,23 @@
     <channel>
         <title>Screen Setter</title>
         <item>
+            <title>2.1</title>
+            <pubDate>Wed, 04 Nov 2026 15:40:56 +0100</pubDate>
+            <link>https://andrea-lonardo.github.io/screen-setter/</link>
+            <sparkle:version>22</sparkle:version>
+            <sparkle:shortVersionString>2.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[<h2>What’s new in Screen Setter 2.1</h2>
+<ul>
+<li>Settings are reorganized. The sidebar lists your display sets under <b>Layouts</b>, then <b>General</b>, <b>Shortcuts</b>, <b>Automation</b> and <b>About</b>.</li>
+<li><b>Shortcuts</b> shows every layout’s keyboard shortcut in one place, ready to record or clear.</li>
+<li><b>Automation</b> shows each display set’s automatic layout, and a ready-to-copy <code>screensetter://</code> link for every layout.</li>
+<li>Updates, links and the license are in <b>About</b>.</li>
+</ul>
+]]></description>
+            <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.1.22/Screen-Setter.zip" length="3958123" type="application/octet-stream" sparkle:edSignature="3b/uwVEZyThR+Zp0l0E3ZVJ5jnxgXYIfSKeWlTOeECV8vNlBb5XntMI2En6pV88k539w0wzs+vHobW6sm9wfDw=="/>
+        </item>
+        <item>
             <title>2.0</title>
             <pubDate>Wed, 04 Nov 2026 04:31:55 +0100</pubDate>
             <link>https://andrea-lonardo.github.io/screen-setter/</link>
