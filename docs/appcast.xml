@@ -3,6 +3,34 @@
     <channel>
         <title>Screen Setter</title>
         <item>
+            <title>2.1.1</title>
+            <pubDate>Wed, 04 Nov 2026 15:55:11 +0100</pubDate>
+            <link>https://andrea-lonardo.github.io/screen-setter/</link>
+            <sparkle:fullReleaseNotesLink>https://github.com/andrea-lonardo/screen-setter/releases</sparkle:fullReleaseNotesLink>
+            <sparkle:version>23</sparkle:version>
+            <sparkle:shortVersionString>2.1.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[<style>
+:root { color-scheme: light dark; }
+body { font: -apple-system-body; font-family: -apple-system, system-ui; margin: 4px 2px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+h2 { font: -apple-system-headline; font-family: -apple-system, system-ui; font-size: 15px; font-weight: 600; margin: 0 0 10px; }
+ul { list-style: none; margin: 0; padding: 0; }
+li { position: relative; padding: 8px 10px 8px 34px; margin: 0 0 6px; border-radius: 10px; background: rgba(128,128,128,0.10); }
+li::before { content: ""; position: absolute; left: 12px; top: 13px; width: 10px; height: 10px; border-radius: 50%; background: #3D9BFF; }
+b { font-weight: 600; }
+p.more { color: rgba(128,128,128,1); font-size: 12px; margin: 10px 0 0; }
+</style>
+<h2>What’s new in Screen Setter 2.1.1</h2>
+<ul>
+<li>Settings keep their sidebar open, and the window title names the pane you’re on.</li>
+<li><b>About</b> is redesigned around the app’s icon and version, and shows whether Screen Setter is up to date.</li>
+<li>Each display set’s automatic layout is set in one place: <b>Automation</b>.</li>
+</ul>
+<p class="more">Full notes are on GitHub.</p>
+]]></description>
+            <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.1.1.23/Screen-Setter.zip" length="3977339" type="application/octet-stream" sparkle:edSignature="Znpl0oObcJOD5iLGhHjc4FKXNHVOVhjpMypcWEduRoGaAHs9WC1VG5D94HNXnXFXfpPSlb+9Nme01DW79NCeDQ=="/>
+        </item>
+        <item>
             <title>2.1</title>
             <pubDate>Wed, 04 Nov 2026 15:40:56 +0100</pubDate>
             <link>https://andrea-lonardo.github.io/screen-setter/</link>
