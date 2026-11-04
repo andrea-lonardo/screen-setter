@@ -37,13 +37,15 @@ struct SettingsRootView: View {
     @Bindable var navigation: SettingsNavigation
 
     var body: some View {
-        NavigationSplitView {
+        // The sidebar is the window's navigation, so it never collapses.
+        NavigationSplitView(columnVisibility: .constant(.all)) {
             SettingsSidebar(model: model, selection: $navigation.selection)
-                .navigationSplitViewColumnWidth(min: 200, ideal: 230, max: 320)
+                .toolbar(removing: .sidebarToggle)
+                .navigationSplitViewColumnWidth(min: 220, ideal: 240, max: 320)
         } detail: {
             detail
+                .navigationTitle(title)
         }
-        .navigationTitle("Screen Setter")
         .toolbar {
             // Saving belongs to the layout library, not to the settings panes.
             if navigation.selection?.isSettingsPane != true {
@@ -86,6 +88,17 @@ struct SettingsRootView: View {
             }
         case nil:
             emptyLibrary
+        }
+    }
+
+    private var title: String {
+        switch navigation.selection {
+        case .general: "General"
+        case .shortcuts: "Shortcuts"
+        case .automation: "Automation"
+        case .about: "About"
+        case .group(let id): model.groups.first { $0.id == id }.map { model.name(of: $0) } ?? "Screen Setter"
+        case nil: "Screen Setter"
         }
     }
 

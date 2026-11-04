@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The layouts of one display set, plus its automatic layout.
+/// The layouts of one display set.
 struct GroupDetailView: View {
     let model: AppModel
     let group: DisplayGroup
@@ -20,7 +20,6 @@ struct GroupDetailView: View {
                 GroupHeader(model: model, group: group, isConnected: isConnected)
             }
             layoutsSection
-            automaticSection
         }
         .formStyle(.grouped)
         .sheet(item: $editing) { layout in
@@ -58,33 +57,9 @@ struct GroupDetailView: View {
         }
     }
 
-    private var automaticSection: some View {
-        Section {
-            Picker("When these displays connect", selection: automaticBinding) {
-                Text("Do Nothing").tag(UUID?.none)
-                Divider()
-                ForEach(layouts) { layout in
-                    Text(layout.name).tag(UUID?.some(layout.id))
-                }
-            }
-        } header: {
-            Text("Automatic")
-        } footer: {
-            Text("The layout is applied when this exact set of displays connects, as long as their resolution, mirroring and rotation still match it.")
-                .foregroundStyle(.secondary)
-        }
-    }
-
     private func commitRename(_ layout: Layout) {
         let name = renameText.trimmingCharacters(in: .whitespacesAndNewlines)
         if !name.isEmpty, name != layout.name { model.rename(layout.id, to: name) }
-    }
-
-    private var automaticBinding: Binding<UUID?> {
-        Binding(
-            get: { model.automaticLayoutID(inGroup: group.id) },
-            set: { model.setAutomaticLayout(inGroup: group.id, layoutID: $0) }
-        )
     }
 
     @ViewBuilder
@@ -130,12 +105,9 @@ private struct GroupHeader: View {
                 .frame(width: 40)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
-                Text(model.name(of: group))
-                    .font(.title3.weight(.semibold))
-                    .lineLimit(2)
-                Text(group.customName == nil
-                    ? (displays.count == 1 ? "1 display" : "\(displays.count) displays")
-                    : displays.map { model.displayLabel(for: $0) }.formatted(.list(type: .and)))
+                Text(displays.count == 1 ? "1 display" : "\(displays.count) displays")
+                    .font(.headline)
+                Text(displays.map { model.displayLabel(for: $0) }.formatted(.list(type: .and)))
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
             }

@@ -76,6 +76,7 @@ extension DisplaySpec {
 
 enum AppInfo {
     static let repositoryURL = URL(string: "https://github.com/andrea-lonardo/screen-setter")!
+    static let releasesURL = URL(string: "https://github.com/andrea-lonardo/screen-setter/releases")!
     static let privacyURL = URL(string: "https://andrea-lonardo.github.io/screen-setter/privacy/")!
 
     static var version: String {
