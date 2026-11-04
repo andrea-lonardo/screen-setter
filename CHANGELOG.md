@@ -2,6 +2,12 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
+## 2.1.2 (24) — 2026-11-04
+
+- Show a **What's New** window once after an update to a new feature
+  release, and from **Settings › About**.
+- Show plain, native release notes in the update dialog.
+
 ## 2.1.1 (23) — 2026-11-04
 
 - Keep the Settings sidebar open: it no longer has a toggle and can't be
