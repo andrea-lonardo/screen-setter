@@ -2,7 +2,7 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
-## 2.0 (21) — Unreleased
+## 2.0 (21) — 2026-11-04
 
 - Rename the app to Screen Setter, since another Mac app is already called
   DisplayLayouts. Layouts saved under the old name are copied to

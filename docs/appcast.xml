@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Screen Setter</title>
+        <item>
+            <title>2.0</title>
+            <pubDate>Wed, 04 Nov 2026 04:31:55 +0100</pubDate>
+            <link>https://andrea-lonardo.github.io/screen-setter/</link>
+            <sparkle:version>21</sparkle:version>
+            <sparkle:shortVersionString>2.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.0.21/Screen-Setter.zip" length="3903783" type="application/octet-stream" sparkle:edSignature="tXfdh1R9GV+34D4GaPlaT8CyWzE54ft9f5+j0Hm0JgiEgQkSP9/cHyXMh/fbU0BMoQm5P9btheOUApdnyzA7Dw=="/>
+        </item>
+    </channel>
+</rss>

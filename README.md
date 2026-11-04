@@ -85,7 +85,7 @@ you can turn off. See the [Privacy Policy](PRIVACY.md).
 
 ## Install
 
-1. Download **Screen Setter.zip** from the
+1. Download **Screen-Setter.zip** from the
    [latest release](https://github.com/andrea-lonardo/screen-setter/releases/latest)
    and unzip it.
 2. Move **Screen Setter** to your Applications folder and open it.
@@ -98,7 +98,7 @@ a paid developer membership. To check your download, compare its checksum with t
 SHA-256 on the release page:
 
 ```sh
-shasum -a 256 ~/Downloads/"Screen Setter.zip"
+shasum -a 256 ~/Downloads/Screen-Setter.zip
 ```
 
 Requires macOS 26 or later, on Apple silicon or Intel. Screen Setter lives in the
@@ -252,7 +252,7 @@ sh Tests/run.sh
 ```
 
 `build.sh` produces an ad-hoc signed universal `build/Screen Setter.app`,
-`build/Screen Setter.zip`, and its SHA-256 checksum. It doesn't install or publish
+`build/Screen-Setter.zip`, and its SHA-256 checksum. It doesn't install or publish
 anything. `--diagnose` prints the connected displays without changing anything or
 reading your saved layouts. The tests use temporary files and a fake display
 engine, so they never rearrange your screens.

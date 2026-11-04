@@ -56,15 +56,15 @@ codesign --force --sign - "${app_dir}"
 codesign --verify --deep --strict "${app_dir}"
 plutil -lint "${app_dir}/Contents/Info.plist"
 
-rm -rf "${build_dir}/Screen Setter.app" "${build_dir}/Screen Setter.zip" "${build_dir}/Screen Setter.zip.sha256"
+rm -rf "${build_dir}/Screen Setter.app" "${build_dir}/Screen-Setter.zip" "${build_dir}/Screen-Setter.zip.sha256"
 ditto "${app_dir}" "${build_dir}/Screen Setter.app"
 codesign --verify --deep --strict "${build_dir}/Screen Setter.app"
-ditto -c -k --sequesterRsrc --keepParent "${app_dir}" "${build_dir}/Screen Setter.zip"
+ditto -c -k --sequesterRsrc --keepParent "${app_dir}" "${build_dir}/Screen-Setter.zip"
 (
   cd "${build_dir}"
-  shasum -a 256 "Screen Setter.zip" > "Screen Setter.zip.sha256"
+  shasum -a 256 "Screen-Setter.zip" > "Screen-Setter.zip.sha256"
 )
 
 print -- "Built: ${build_dir}/Screen Setter.app ($(lipo -archs "${build_dir}/Screen Setter.app/Contents/MacOS/Screen Setter"))"
-print -- "Archive: ${build_dir}/Screen Setter.zip"
-print -- "SHA-256: $(cut -d ' ' -f 1 "${build_dir}/Screen Setter.zip.sha256")"
+print -- "Archive: ${build_dir}/Screen-Setter.zip"
+print -- "SHA-256: $(cut -d ' ' -f 1 "${build_dir}/Screen-Setter.zip.sha256")"
