@@ -2,6 +2,15 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
+## 2.1.1 (23) — 2026-11-04
+
+- Keep the Settings sidebar open: it no longer has a toggle and can't be
+  collapsed. The window title names the selected pane or display set.
+- Redesign **About** around the app's icon, name and version, with whether
+  Screen Setter is up to date and when it last checked.
+- Set each display set's automatic layout only in **Automation**, instead of
+  also on the display set's page.
+
 ## 2.1 (22) — 2026-11-04
 
 - Reorganize Settings: the sidebar lists your display sets under **Layouts**,
