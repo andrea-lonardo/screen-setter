@@ -2,6 +2,17 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
+## 2.2.0 (25) — 2026-11-05
+
+- Show each display set's layouts as a **gallery** of cards with the
+  arrangement drawn large. Click a card to switch to it; right-click or
+  hover **⋯** to edit, rename, duplicate, move or delete it.
+- Add **New Layout…** to the sidebar, always available, even before the
+  first layout, and as the last card of the connected display set.
+- Mark the connected display set with a blue icon and plain wording instead
+  of green badges. Sidebar rows are one line, and every pane has the same
+  title bar.
+
 ## 2.1.2 (24) — 2026-11-04
 
 - Show a **What's New** window once after an update to a new feature

@@ -39,7 +39,9 @@ struct SettingsRootView: View {
     var body: some View {
         // The sidebar is the window's navigation, so it never collapses.
         NavigationSplitView(columnVisibility: .constant(.all)) {
-            SettingsSidebar(model: model, selection: $navigation.selection)
+            SettingsSidebar(model: model, selection: $navigation.selection) {
+                navigation.isSavingCurrentArrangement = true
+            }
                 .toolbar(removing: .sidebarToggle)
                 .navigationSplitViewColumnWidth(min: 220, ideal: 240, max: 320)
         } detail: {
@@ -124,15 +126,15 @@ struct SettingsRootView: View {
 struct SettingsSidebar: View {
     let model: AppModel
     @Binding var selection: SidebarItem?
+    /// Starts saving the current arrangement as a new layout.
+    let onNewLayout: () -> Void
 
     @State private var renamingGroup: DisplayGroup?
     @State private var renameText = ""
 
     var body: some View {
         List(selection: $selection) {
-            if !model.groups.isEmpty {
-                displaySets
-            }
+            displaySets
 
             Section("Settings") {
                 Label("General", systemImage: "gearshape")
@@ -169,6 +171,22 @@ struct SettingsSidebar: View {
             .onMove { source, destination in
                 model.moveGroups(from: source, to: destination)
             }
+
+            // Always here, even with no layouts: saving works for any displays.
+            Button(action: onNewLayout) {
+                Label {
+                    Text("New Layout…")
+                        .foregroundStyle(.secondary)
+                } icon: {
+                    Image(systemName: "plus")
+                        .foregroundStyle(.tint)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(model.isBusy)
+            .help("Save how your displays are set up now as a new layout")
         }
     }
 

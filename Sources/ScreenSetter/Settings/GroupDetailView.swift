@@ -38,7 +38,7 @@ struct GroupDetailView: View {
                     }
                 }
 
-                otherDisplaysNote(connected: connected)
+                otherDisplaysNote
                     .padding(.top, 6)
             }
             .padding(.horizontal, 24)
@@ -70,24 +70,15 @@ struct GroupDetailView: View {
             : "\(subject) aren’t connected right now. Click a layout to edit it."
     }
 
-    /// How to make layouts for displays that have no set yet. Saving always files the
-    /// layout under the displays connected now, so the button is offered only on a
-    /// set that isn't connected; a connected set has its own tile for that.
-    private func otherDisplaysNote(connected: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Layouts for other displays")
-                .font(.headline)
-            Text("Connect them and arrange them in Display Settings, then choose Save Current Arrangement. Each set of displays gets its own place in the sidebar.")
+    /// How to make layouts for displays that have no set yet: New Layout in the
+    /// sidebar always saves the displays connected now.
+    private var otherDisplaysNote: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text("For other displays, connect and arrange them, then choose New Layout in the sidebar.")
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
-            HStack(spacing: 8) {
-                if !connected {
-                    Button("Save Current Arrangement…", action: onNewLayout)
-                        .disabled(model.isBusy)
-                }
-                Button("Display Settings…") { model.openDisplaySettings() }
-            }
-            .padding(.top, 2)
+            Spacer(minLength: 0)
+            Button("Display Settings…") { model.openDisplaySettings() }
         }
     }
 
@@ -233,10 +224,9 @@ private struct NewLayoutCard: View {
                             .foregroundStyle(.secondary)
                     }
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("Save Current Arrangement…")
+                    Text("New Layout…")
                         .fontWeight(.medium)
-                        .lineLimit(1)
-                    Text("As a new layout")
+                    Text("From the current arrangement")
                         .font(.callout)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)

@@ -125,7 +125,7 @@ struct ScreenSetterApplication {
         for flag in ["--render-settings", "--render-onboarding"] {
             guard let index = arguments.firstIndex(of: flag) else { continue }
             guard index + 1 < arguments.count, !arguments[index + 1].hasPrefix("--") else {
-                fputs("Usage: Screen Setter \(flag) /path/to/output.png [--dark] [--pane general|shortcuts|automation|about] [--set <n>]\n", stderr)
+                fputs("Usage: Screen Setter \(flag) /path/to/output.png [--dark] [--pane general|shortcuts|automation|about] [--set <n>] [--empty]\n", stderr)
                 exit(2)
             }
             var pane: SidebarItem?
@@ -147,7 +147,7 @@ struct ScreenSetterApplication {
             }
             render(onboarding: flag == "--render-onboarding",
                    to: URL(fileURLWithPath: arguments[index + 1]), dark: arguments.contains("--dark"),
-                   pane: pane, setNumber: setNumber)
+                   pane: pane, setNumber: setNumber, empty: arguments.contains("--empty"))
             return
         }
 
@@ -165,13 +165,14 @@ struct ScreenSetterApplication {
     /// Renders Settings or the welcome window with isolated sample data; never
     /// reads or changes real displays.
     @MainActor
-    private static func render(onboarding: Bool, to url: URL, dark: Bool, pane: SidebarItem? = nil, setNumber: Int? = nil) {
+    private static func render(onboarding: Bool, to url: URL, dark: Bool, pane: SidebarItem? = nil, setNumber: Int? = nil,
+                               empty: Bool = false) {
         let application = NSApplication.shared
         application.setActivationPolicy(.prohibited)
         application.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
         application.finishLaunching()
 
-        let model = AppModel(store: PreviewLibrary.makeStore(empty: onboarding), isPreview: true)
+        let model = AppModel(store: PreviewLibrary.makeStore(empty: onboarding || empty), isPreview: true)
         // Pick up the sample's connected display set before rendering.
         let deadline = Date().addingTimeInterval(5)
         model.start()

@@ -12,6 +12,23 @@ enum WhatsNew {
     }
 
     static let releases: [String: [Feature]] = [
+        "2.2": [
+            Feature(
+                symbol: "square.grid.2x2",
+                title: "Layouts at a glance",
+                detail: "Each display set shows its layouts as cards with the arrangement drawn large. Click one to switch to it."
+            ),
+            Feature(
+                symbol: "plus",
+                title: "New Layout, always in reach",
+                detail: "Save the current arrangement from the sidebar, whichever displays are connected."
+            ),
+            Feature(
+                symbol: "display.2",
+                title: "A calmer sidebar",
+                detail: "One line per display set. The connected set has a blue icon."
+            ),
+        ],
         "2.1": [
             Feature(
                 symbol: "sidebar.left",
