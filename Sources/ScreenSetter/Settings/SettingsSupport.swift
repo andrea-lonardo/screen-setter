@@ -179,18 +179,3 @@ struct SaveArrangementSheet: View {
         }
     }
 }
-
-/// A subtle capsule showing a keyboard shortcut.
-struct HotkeyBadge: View {
-    let hotkey: Hotkey
-
-    var body: some View {
-        Text(hotkey.displayString)
-            .font(.callout.monospaced())
-            .foregroundStyle(.secondary)
-            .padding(.horizontal, 7)
-            .padding(.vertical, 2)
-            .background(.quaternary, in: Capsule())
-            .accessibilityLabel("Keyboard shortcut \(hotkey.displayString)")
-    }
-}

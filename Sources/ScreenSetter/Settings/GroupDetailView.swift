@@ -1,9 +1,11 @@
 import SwiftUI
 
-/// The layouts of one display set.
+/// The layouts of one display set, as a gallery of arrangement cards.
 struct GroupDetailView: View {
     let model: AppModel
     let group: DisplayGroup
+    /// Starts saving the current arrangement as a new layout.
+    let onNewLayout: () -> Void
 
     @State private var editing: Layout?
     @State private var renaming: Layout?
@@ -11,19 +13,39 @@ struct GroupDetailView: View {
     @State private var deleting: Layout?
     @State private var replacing: Layout?
 
-    private var layouts: [Layout] { model.layouts(inGroup: group.id) }
-    private var isConnected: Bool { model.isConnected(group) }
+    private let columns = [GridItem(.adaptive(minimum: 172, maximum: 260), spacing: 14, alignment: .top)]
 
     var body: some View {
-        Form {
-            Section {
-                GroupHeader(model: model, group: group, isConnected: isConnected)
+        let layouts = model.layouts(inGroup: group.id)
+        let connected = model.isConnected(group)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                Text(statusText(connected: connected))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                LazyVGrid(columns: columns, alignment: .leading, spacing: 18) {
+                    ForEach(layouts) { layout in
+                        LayoutCard(model: model, layout: layout, isConnected: connected) {
+                            if connected { model.apply(layout.id) } else { editing = layout }
+                        } actions: {
+                            actions(for: layout, in: layouts)
+                        }
+                    }
+                    if connected {
+                        NewLayoutCard(action: onNewLayout)
+                            .disabled(model.isBusy)
+                    }
+                }
+
+                otherDisplaysNote(connected: connected)
+                    .padding(.top, 6)
             }
-            layoutsSection
+            .padding(.horizontal, 24)
+            .padding(.vertical, 20)
         }
-        .formStyle(.grouped)
         .sheet(item: $editing) { layout in
-            LayoutEditorView(model: model, layout: layout, isConnected: isConnected)
+            LayoutEditorView(model: model, layout: layout, isConnected: connected)
         }
         .alert("Rename Layout", isPresented: $renaming.isPresented, presenting: renaming) { layout in
             TextField("Name", text: $renameText, prompt: Text(layout.name))
@@ -34,26 +56,38 @@ struct GroupDetailView: View {
         .modifier(ReplaceConfirmation(model: model, replacing: $replacing))
     }
 
-    private var layoutsSection: some View {
-        let layouts = layouts
-        let connected = isConnected
-        return Section {
-            ForEach(layouts) { layout in
-                LayoutRow(model: model, layout: layout, isConnected: connected, onEdit: { editing = layout }) {
-                    actions(for: layout, in: layouts, includeMoves: false)
-                }
-                .contextMenu { actions(for: layout, in: layouts, includeMoves: true) }
-            }
-            .onMove { source, destination in
-                model.moveLayouts(inGroup: group.id, from: source, to: destination)
-            }
-        } header: {
-            Text("Layouts")
-        } footer: {
-            Text(connected
-                ? "Double-click a layout to edit it. Drag layouts to change their order in the menu."
-                : "Connect these displays to apply their layouts. You can still edit them.")
+    /// Names the displays only when the set has a custom name; otherwise the title already does.
+    private func statusText(connected: Bool) -> String {
+        let subject: String
+        if group.customName != nil {
+            subject = model.displays(inGroup: group.id).map { model.displayLabel(for: $0) }
+                .formatted(.list(type: .and))
+        } else {
+            subject = "These displays"
+        }
+        return connected
+            ? "\(subject) are connected. Click a layout to switch to it."
+            : "\(subject) aren’t connected right now. Click a layout to edit it."
+    }
+
+    /// How to make layouts for displays that have no set yet. Saving always files the
+    /// layout under the displays connected now, so the button is offered only on a
+    /// set that isn't connected; a connected set has its own tile for that.
+    private func otherDisplaysNote(connected: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Layouts for other displays")
+                .font(.headline)
+            Text("Connect them and arrange them in Display Settings, then choose Save Current Arrangement. Each set of displays gets its own place in the sidebar.")
                 .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            HStack(spacing: 8) {
+                if !connected {
+                    Button("Save Current Arrangement…", action: onNewLayout)
+                        .disabled(model.isBusy)
+                }
+                Button("Display Settings…") { model.openDisplaySettings() }
+            }
+            .padding(.top, 2)
         }
     }
 
@@ -63,7 +97,9 @@ struct GroupDetailView: View {
     }
 
     @ViewBuilder
-    private func actions(for layout: Layout, in layouts: [Layout], includeMoves: Bool) -> some View {
+    private func actions(for layout: Layout, in layouts: [Layout]) -> some View {
+        Button("Apply") { model.apply(layout.id) }
+            .disabled(!model.isConnected(group) || model.isBusy)
         Button("Edit…") { editing = layout }
         Button("Rename…") {
             renameText = layout.name
@@ -71,124 +107,146 @@ struct GroupDetailView: View {
         }
         Button("Duplicate") { model.duplicate(layout.id) }
             .disabled(model.isBusy)
-        if includeMoves, layouts.count > 1, let index = layouts.firstIndex(where: { $0.id == layout.id }) {
+        if layouts.count > 1, let index = layouts.firstIndex(where: { $0.id == layout.id }) {
             Divider()
-            Button("Move Up") {
+            Button("Move Left") {
                 model.moveLayouts(inGroup: group.id, from: IndexSet(integer: index), to: index - 1)
             }
             .disabled(index == 0)
-            Button("Move Down") {
+            Button("Move Right") {
                 model.moveLayouts(inGroup: group.id, from: IndexSet(integer: index), to: index + 2)
             }
             .disabled(index == layouts.count - 1)
         }
         Divider()
         Button("Replace with Current Arrangement…") { replacing = layout }
-            .disabled(!isConnected || model.isBusy)
+            .disabled(!model.isConnected(group) || model.isBusy)
         Divider()
         Button("Delete…", role: .destructive) { deleting = layout }
             .disabled(model.isBusy)
     }
 }
 
-private struct GroupHeader: View {
-    let model: AppModel
-    let group: DisplayGroup
-    let isConnected: Bool
-
-    var body: some View {
-        let displays = model.displays(inGroup: group.id)
-        HStack(spacing: 12) {
-            Image(systemName: displays.count > 1 ? "display.2" : "display")
-                .font(.system(size: 26, weight: .regular))
-                .foregroundStyle(.tint)
-                .frame(width: 40)
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(displays.count == 1 ? "1 display" : "\(displays.count) displays")
-                    .font(.headline)
-                Text(displays.map { model.displayLabel(for: $0) }.formatted(.list(type: .and)))
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-            }
-            Spacer(minLength: 8)
-            if isConnected {
-                Label("Connected", systemImage: "checkmark.circle.fill")
-                    .labelStyle(ConnectedLabelStyle())
-            } else {
-                Text("Not Connected")
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .padding(.vertical, 4)
-        .accessibilityElement(children: .combine)
-    }
+private enum CardMetrics {
+    static let height: CGFloat = 100
+    static let radius: CGFloat = 12
 }
 
-private struct ConnectedLabelStyle: LabelStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        HStack(spacing: 4) {
-            configuration.icon.foregroundStyle(.green)
-            configuration.title.foregroundStyle(.secondary)
-        }
-    }
-}
-
-private struct LayoutRow<Actions: View>: View {
+/// A layout as a card: its arrangement drawn large, then its name, mode and shortcut.
+private struct LayoutCard<Actions: View>: View {
     let model: AppModel
     let layout: Layout
     let isConnected: Bool
-    let onEdit: () -> Void
+    let action: () -> Void
     @ViewBuilder let actions: () -> Actions
+
+    @State private var isHovering = false
 
     var body: some View {
         let isActive = model.activeLayoutID == layout.id
-        HStack(spacing: 12) {
-            LayoutThumbnailView(snapshot: layout.snapshot, isActive: isActive)
-                .frame(width: 46, height: 32)
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 6) {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 8) {
+                preview(isActive: isActive)
+                VStack(alignment: .leading, spacing: 1) {
                     Text(layout.name)
+                        .fontWeight(.medium)
                         .lineLimit(1)
-                    if isActive {
-                        Label("Current", systemImage: "checkmark")
-                            .labelStyle(.titleAndIcon)
-                            .font(.caption.weight(.medium))
-                            .foregroundStyle(.tint)
-                            .accessibilityLabel("Current layout")
+                    HStack(spacing: 6) {
+                        Text(isActive ? "Current" : (layout.isMirrored ? "Mirrored" : "Extended"))
+                            .foregroundStyle(isActive ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
+                        Spacer(minLength: 4)
+                        if let hotkey = layout.hotkey {
+                            Text(hotkey.displayString)
+                                .foregroundStyle(.secondary)
+                                .accessibilityLabel("Keyboard shortcut \(hotkey.displayString)")
+                        }
                     }
-                }
-                Text(model.summary(for: layout))
                     .font(.callout)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                }
+                .padding(.horizontal, 2)
             }
-            Spacer(minLength: 8)
-            if let hotkey = layout.hotkey {
-                HotkeyBadge(hotkey: hotkey)
-            }
-            Button("Apply") { model.apply(layout.id) }
-                .disabled(!isConnected || model.isBusy)
-                .help(isConnected ? "Switch to this layout" : "Connect these displays to apply this layout")
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(isConnected && model.isBusy)
+        .help(isConnected ? "Switch to this layout" : "Edit this layout")
+        .contextMenu { actions() }
+        .overlay(alignment: .topLeading) {
             Menu {
                 actions()
             } label: {
-                Image(systemName: "ellipsis.circle")
-                    .imageScale(.large)
+                Image(systemName: "ellipsis")
+                    .frame(width: 22, height: 22)
+                    .background(.regularMaterial, in: Circle())
             }
             .menuStyle(.button)
-            .buttonStyle(.borderless)
+            .buttonStyle(.plain)
             .menuIndicator(.hidden)
             .fixedSize()
-            .foregroundStyle(.secondary)
+            .padding(7)
+            .opacity(isHovering ? 1 : 0)
             .help("More Actions")
             .accessibilityLabel("More Actions")
         }
-        .padding(.vertical, 2)
-        .contentShape(Rectangle())
-        .onTapGesture(count: 2, perform: onEdit)
-        .accessibilityElement(children: .contain)
-        .accessibilityAction(named: "Edit") { onEdit() }
+        .onHover { isHovering = $0 }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(isActive ? .isSelected : [])
+    }
+
+    private func preview(isActive: Bool) -> some View {
+        let shape = RoundedRectangle(cornerRadius: CardMetrics.radius, style: .continuous)
+        return ZStack(alignment: .topTrailing) {
+            shape.fill(.quinary)
+            LayoutThumbnailView(snapshot: layout.snapshot, isActive: isActive)
+                .padding(.horizontal, 30)
+                .padding(.vertical, 18)
+            if isActive {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 15))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, Color.accentColor)
+                    .padding(8)
+                    .accessibilityHidden(true)
+            }
+        }
+        .frame(height: CardMetrics.height)
+        .overlay {
+            shape.strokeBorder(isActive ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(.separator),
+                               lineWidth: isActive ? 2 : 1)
+        }
+    }
+}
+
+/// The last tile of a connected set: saves the current arrangement as a new layout.
+private struct NewLayoutCard: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 8) {
+                RoundedRectangle(cornerRadius: CardMetrics.radius, style: .continuous)
+                    .strokeBorder(.separator, style: StrokeStyle(lineWidth: 1, dash: [4, 4]))
+                    .frame(height: CardMetrics.height)
+                    .overlay {
+                        Image(systemName: "plus")
+                            .font(.system(size: 20))
+                            .foregroundStyle(.secondary)
+                    }
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("Save Current Arrangement…")
+                        .fontWeight(.medium)
+                        .lineLimit(1)
+                    Text("As a new layout")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+                .padding(.horizontal, 2)
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help("Save how your displays are set up now as a new layout")
     }
 }
 

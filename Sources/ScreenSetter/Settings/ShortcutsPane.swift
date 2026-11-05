@@ -69,10 +69,9 @@ struct GroupSectionHeader: View {
         HStack(spacing: 6) {
             Text(model.name(of: group))
             if model.isConnected(group) {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.green)
-                    .imageScale(.small)
-                    .accessibilityLabel("Connected")
+                Text("Connected")
+                    .fontWeight(.regular)
+                    .foregroundStyle(.secondary)
             }
         }
     }

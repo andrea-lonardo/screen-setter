@@ -46,20 +46,6 @@ struct SettingsRootView: View {
             detail
                 .navigationTitle(title)
         }
-        .toolbar {
-            // Saving belongs to the layout library, not to the settings panes.
-            if navigation.selection?.isSettingsPane != true {
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        navigation.isSavingCurrentArrangement = true
-                    } label: {
-                        Label("Save Current Arrangement…", systemImage: "plus")
-                    }
-                    .help("Save Current Arrangement…")
-                    .disabled(model.isBusy)
-                }
-            }
-        }
         .sheet(isPresented: $navigation.isSavingCurrentArrangement) {
             SaveArrangementSheet(model: model) { layout in
                 navigation.selection = .group(layout.groupID)
@@ -81,8 +67,10 @@ struct SettingsRootView: View {
             AboutPane(model: model)
         case .group(let id):
             if let group = model.groups.first(where: { $0.id == id }) {
-                GroupDetailView(model: model, group: group)
-                    .id(group.id)
+                GroupDetailView(model: model, group: group) {
+                    navigation.isSavingCurrentArrangement = true
+                }
+                .id(group.id)
             } else {
                 emptyLibrary
             }
@@ -206,27 +194,19 @@ private struct GroupSidebarRow: View {
         let connected = model.isConnected(group)
         let count = group.id.split(separator: "+").count
         Label {
-            VStack(alignment: .leading, spacing: 1) {
-                Text(model.name(of: group))
-                    .lineLimit(1)
-                if connected {
-                    HStack(spacing: 3) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
-                            .imageScale(.small)
-                        Text("Connected")
-                    }
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                } else {
-                    Text(count == 1 ? "1 display" : "\(count) displays")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-            }
+            Text(model.name(of: group))
+                .lineLimit(1)
         } icon: {
-            Image(systemName: count > 1 ? "display.2" : "display")
+            // The connected set is the one marked in colour.
+            if connected {
+                Image(systemName: count > 1 ? "display.2" : "display")
+                    .foregroundStyle(.tint)
+            } else {
+                Image(systemName: count > 1 ? "display.2" : "display")
+            }
         }
+        .help(connected ? "Connected" : (count == 1 ? "1 display" : "\(count) displays"))
         .accessibilityElement(children: .combine)
+        .accessibilityValue(connected ? "Connected" : "Not connected")
     }
 }

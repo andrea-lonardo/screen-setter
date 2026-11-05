@@ -125,7 +125,7 @@ struct ScreenSetterApplication {
         for flag in ["--render-settings", "--render-onboarding"] {
             guard let index = arguments.firstIndex(of: flag) else { continue }
             guard index + 1 < arguments.count, !arguments[index + 1].hasPrefix("--") else {
-                fputs("Usage: Screen Setter \(flag) /path/to/output.png [--dark] [--pane general|shortcuts|automation|about]\n", stderr)
+                fputs("Usage: Screen Setter \(flag) /path/to/output.png [--dark] [--pane general|shortcuts|automation|about] [--set <n>]\n", stderr)
                 exit(2)
             }
             var pane: SidebarItem?
@@ -136,8 +136,18 @@ struct ScreenSetterApplication {
                 }
                 pane = item
             }
+            // `--set <n>` selects the n-th display set (1-based) instead of a pane.
+            var setNumber: Int?
+            if let setIndex = arguments.firstIndex(of: "--set") {
+                guard setIndex + 1 < arguments.count, let number = Int(arguments[setIndex + 1]), number > 0 else {
+                    fputs("--set takes a display set number, starting at 1.\n", stderr)
+                    exit(2)
+                }
+                setNumber = number
+            }
             render(onboarding: flag == "--render-onboarding",
-                   to: URL(fileURLWithPath: arguments[index + 1]), dark: arguments.contains("--dark"), pane: pane)
+                   to: URL(fileURLWithPath: arguments[index + 1]), dark: arguments.contains("--dark"),
+                   pane: pane, setNumber: setNumber)
             return
         }
 
@@ -155,7 +165,7 @@ struct ScreenSetterApplication {
     /// Renders Settings or the welcome window with isolated sample data; never
     /// reads or changes real displays.
     @MainActor
-    private static func render(onboarding: Bool, to url: URL, dark: Bool, pane: SidebarItem? = nil) {
+    private static func render(onboarding: Bool, to url: URL, dark: Bool, pane: SidebarItem? = nil, setNumber: Int? = nil) {
         let application = NSApplication.shared
         application.setActivationPolicy(.prohibited)
         application.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
@@ -173,7 +183,11 @@ struct ScreenSetterApplication {
             if onboarding {
                 try OnboardingWindowController(model: model).render(to: url)
             } else {
-                try SettingsWindowController(model: model).render(to: url, selecting: pane)
+                var item = pane
+                if let setNumber, setNumber <= model.groups.count {
+                    item = .group(model.groups[setNumber - 1].id)
+                }
+                try SettingsWindowController(model: model).render(to: url, selecting: item)
             }
             print("Rendered \(onboarding ? "the welcome window" : "Settings") with isolated sample data to \(url.path).")
         } catch {
