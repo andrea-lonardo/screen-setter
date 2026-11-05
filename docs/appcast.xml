@@ -3,6 +3,23 @@
     <channel>
         <title>Screen Setter</title>
         <item>
+            <title>2.2.0</title>
+            <pubDate>Thu, 05 Nov 2026 09:53:35 +0100</pubDate>
+            <link>https://andrea-lonardo.github.io/screen-setter/</link>
+            <sparkle:fullReleaseNotesLink>https://github.com/andrea-lonardo/screen-setter/releases</sparkle:fullReleaseNotesLink>
+            <sparkle:version>25</sparkle:version>
+            <sparkle:shortVersionString>2.2.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[<style>body { font-family: -apple-system, system-ui; font-size: 13px; line-height: 1.4; margin: 6px 4px; } ul { margin: 0; padding-left: 18px; } li { margin: 0 0 6px; }</style>
+<ul>
+<li>Each display set shows its layouts as cards with the arrangement drawn large. Click one to switch to it.</li>
+<li>New Layout… is always in the sidebar, even before your first layout.</li>
+<li>The connected display set is marked with a blue icon, and the sidebar is one line per set.</li>
+</ul>
+]]></description>
+            <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.2.0.25/Screen-Setter.zip" length="4028584" type="application/octet-stream" sparkle:edSignature="OoiZo1Me2EZaLMn6tTO3CyZWQiNylvEAQIvICrSBDLMIwJEUjBYHTSvNXNHhBzYvLXymCr21h6OaK+B47koiAw=="/>
+        </item>
+        <item>
             <title>2.1.2</title>
             <pubDate>Wed, 04 Nov 2026 16:39:10 +0100</pubDate>
             <link>https://andrea-lonardo.github.io/screen-setter/</link>
@@ -34,22 +51,6 @@
 </ul>
 ]]></description>
             <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.1.1.23/Screen-Setter.zip" length="3977339" type="application/octet-stream" sparkle:edSignature="Znpl0oObcJOD5iLGhHjc4FKXNHVOVhjpMypcWEduRoGaAHs9WC1VG5D94HNXnXFXfpPSlb+9Nme01DW79NCeDQ=="/>
-        </item>
-        <item>
-            <title>2.1</title>
-            <pubDate>Wed, 04 Nov 2026 15:40:56 +0100</pubDate>
-            <link>https://andrea-lonardo.github.io/screen-setter/</link>
-            <sparkle:version>22</sparkle:version>
-            <sparkle:shortVersionString>2.1</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<style>body { font-family: -apple-system, system-ui; font-size: 13px; line-height: 1.4; margin: 6px 4px; } ul { margin: 0; padding-left: 18px; } li { margin: 0 0 6px; }</style>
-<ul>
-<li>Settings are reorganized: your display sets come first, then General, Shortcuts, Automation and About.</li>
-<li>Shortcuts shows every layout’s keyboard shortcut in one place.</li>
-<li>Automation shows each display set’s automatic layout and a link for every layout.</li>
-</ul>
-]]></description>
-            <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.1.22/Screen-Setter.zip" length="3958123" type="application/octet-stream" sparkle:edSignature="3b/uwVEZyThR+Zp0l0E3ZVJ5jnxgXYIfSKeWlTOeECV8vNlBb5XntMI2En6pV88k539w0wzs+vHobW6sm9wfDw=="/>
         </item>
     </channel>
 </rss>
