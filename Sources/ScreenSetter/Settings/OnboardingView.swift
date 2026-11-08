@@ -61,7 +61,7 @@ struct OnboardingView: View {
             .padding(.bottom, 16)
 
             HStack(spacing: 10) {
-                Button("Display Settings…") { model.openDisplaySettings() }
+                Button("macOS Display Settings…") { model.openDisplaySettings() }
                 Button("Save Current Arrangement…", action: saveCurrent)
                     .disabled(isSaving || model.isBusy)
                 Spacer()

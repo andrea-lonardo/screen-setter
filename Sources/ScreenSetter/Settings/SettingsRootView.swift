@@ -103,7 +103,7 @@ struct SettingsRootView: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(model.isBusy)
-            Button("Display Settings…") { model.openDisplaySettings() }
+            Button("macOS Display Settings…") { model.openDisplaySettings() }
         }
     }
 

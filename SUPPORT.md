@@ -22,7 +22,7 @@ described in [SECURITY.md](SECURITY.md).
 
 - **macOS won't open the app the first time.** Open System Settings › Privacy &
   Security, scroll down, click **Open Anyway**, and confirm with **Open**.
-- **A display went dark after switching.** Choose **Undo** in the menu, unplug
+- **A display went dark after switching.** Unplug
   and reconnect the display, or fix the arrangement in System Settings ›
   Displays.
 - **The menu bar icon is missing.** macOS hides menu bar items when there's no

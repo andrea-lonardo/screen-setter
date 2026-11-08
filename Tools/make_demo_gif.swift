@@ -128,7 +128,7 @@ func frame(from: Int, to: Int, progress: CGFloat, highlighted: Int?, checked: In
         menuPath.lineWidth = 1.5
         menuPath.stroke()
         draw("Built-in Display + Studio Display", at: CGPoint(x: menu.minX + 44, y: menu.minY + 14), size: 16, weight: .semibold, color: text3)
-        let rows = layouts.map(\.name) + ["", "Undo", "Save Current Arrangement…"]
+        let rows = layouts.map(\.name) + ["", "Save Current Arrangement…"]
         var y = menu.minY + 46
         for (index, row) in rows.enumerated() {
             if row.isEmpty {
@@ -147,7 +147,7 @@ func frame(from: Int, to: Int, progress: CGFloat, highlighted: Int?, checked: In
             let ink = isHighlighted ? onAccent : (isLayout ? text : text2)
             if index == checked { draw("✓", at: CGPoint(x: rowRect.minX + 12, y: y + 11), size: 18, weight: .bold, color: ink) }
             draw(row, at: CGPoint(x: rowRect.minX + 36, y: y + 11), size: 19, weight: .regular, color: ink)
-            let key = isLayout ? "⌘\(index + 1)" : (row == "Undo" ? "⌘Z" : "")
+            let key = isLayout ? "⌘\(index + 1)" : ""
             if !key.isEmpty {
                 let keyColor = isHighlighted ? onAccent : text3
                 let measured = NSAttributedString(string: key, attributes: [.font: NSFont.systemFont(ofSize: 17)]).size()

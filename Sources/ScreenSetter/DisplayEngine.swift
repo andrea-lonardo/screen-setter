@@ -10,8 +10,8 @@ enum DisplayEngineError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unavailable(let message): return message
-        case .system(let code): return "macOS could not complete the display request (\(code.rawValue)). If a change was started, use Undo to restore the previous arrangement."
-        case .verification: return "macOS did not restore every saved display setting. The current arrangement has been refreshed. Use Undo to restore the previous arrangement."
+        case .system(let code): return "macOS could not complete the display request (\(code.rawValue)). If a change was started, open macOS Display Settings to adjust the arrangement."
+        case .verification: return "macOS did not restore every saved display setting. The current arrangement has been refreshed. Open macOS Display Settings to adjust the arrangement."
         }
     }
 }
@@ -148,10 +148,10 @@ final class DisplayEngine: DisplayControlling {
                 throw DisplayEngineError.unavailable("A saved display is no longer connected.")
             }
             guard abs(live.rotation - display.rotation) < 0.01 else {
-                throw DisplayEngineError.unavailable("Set the saved display rotation in Display Settings first, then apply this layout. The native engine preserves rotation but cannot change it.")
+                throw DisplayEngineError.unavailable("Set the saved display rotation in macOS Display Settings first, then apply this layout. The native engine preserves rotation but cannot change it.")
             }
             guard let mode = matchingMode(display.mode, on: id) else {
-                throw DisplayEngineError.unavailable("A saved resolution, scaling, or refresh rate is no longer available. Review the arrangement in Display Settings and save it again.")
+                throw DisplayEngineError.unavailable("A saved resolution, scaling, or refresh rate is no longer available. Review the arrangement in macOS Display Settings and save it again.")
             }
             modes[display.id.uppercased()] = mode
             if let source = display.mirrorSourceID {

@@ -49,7 +49,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
     /// Reads everything the menu shows, registering observation.
     private func observedState() {
         _ = (model.library, model.currentSnapshot, model.activeLayoutID, model.isBusy,
-             model.reviewMessage, model.hotkeyIssue, model.undoActionTitle)
+             model.reviewMessage, model.hotkeyIssue)
     }
 
     private func rebuildMenu() {
@@ -89,15 +89,9 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         save.isEnabled = !busy
         menu.addItem(save)
 
-        if let undoTitle = model.undoActionTitle {
-            let undo = item(undoTitle, action: #selector(undo), symbol: "arrow.uturn.backward", key: "z")
-            undo.isEnabled = !busy
-            menu.addItem(undo)
-        }
-
         menu.addItem(.separator())
-        menu.addItem(item("Display Settings…", action: #selector(openDisplaySettings), symbol: "display"))
-        menu.addItem(item("Settings…", action: #selector(openSettings), symbol: "gearshape", key: ","))
+        menu.addItem(item("macOS Display Settings…", action: #selector(openDisplaySettings), symbol: "display"))
+        menu.addItem(item("Screen Setter Settings…", action: #selector(openSettings), symbol: "gearshape", key: ","))
         let updates = item("Check for Updates…", action: #selector(checkForUpdates), symbol: "arrow.triangle.2.circlepath")
         updates.isEnabled = model.updates.canCheckForUpdates
         menu.addItem(updates)
@@ -173,7 +167,6 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         model.saveCurrentArrangement(named: name.isEmpty ? nil : name)
     }
 
-    @objc private func undo() { model.undo() }
     @objc private func showReview() { model.showReviewDetails() }
     @objc private func openDisplaySettings() { model.openDisplaySettings() }
     @objc private func openSettings() { model.openSettings() }

@@ -28,8 +28,6 @@ final class AppModel {
 
     /// Set by the hotkey center when a shortcut could not be registered.
     private(set) var hotkeyIssue: String?
-    /// The store's Undo title, mirrored so observers update after operations.
-    private(set) var undoActionTitle: String?
     /// Called on main after a display operation succeeds (the menu bar flashes).
     @ObservationIgnored var operationDidSucceed: (() -> Void)?
 
@@ -52,7 +50,6 @@ final class AppModel {
         self.isPreview = isPreview
         updates = UpdateController(enabled: !isPreview)
         library = store.library
-        undoActionTitle = store.undoActionTitle
     }
 
     // MARK: Queries
@@ -111,10 +108,6 @@ final class AppModel {
 
     func replaceWithCurrentArrangement(_ id: UUID) {
         perform({ try $0.replaceWithCurrent(id) })
-    }
-
-    func undo() {
-        perform({ try $0.undo() })
     }
 
     func refresh() {
@@ -295,7 +288,7 @@ extension AppModel {
         guard !message.isEmpty else { return }
         let alert = makeAlert(title: reviewMessage == nil ? "Review Keyboard Shortcuts" : "Review Display Layout",
                               message: message, style: .informational)
-        alert.addButton(withTitle: "Open Settings…")
+        alert.addButton(withTitle: "Screen Setter Settings…")
         alert.addButton(withTitle: "Cancel")
         if alert.runModal() == .alertFirstButtonReturn { openSettings() }
     }
@@ -444,8 +437,6 @@ private extension AppModel {
         if library != newLibrary { library = newLibrary }
         let active = currentSnapshot.flatMap { store.activeLayoutID(in: $0) }
         if activeLayoutID != active { activeLayoutID = active }
-        let undo = store.undoActionTitle
-        if undoActionTitle != undo { undoActionTitle = undo }
     }
 
     func present(_ error: Error) {
@@ -455,7 +446,7 @@ private extension AppModel {
                 message: "Connect the displays used by “\(name)” to apply it. Your saved layout is unchanged.",
                 style: .informational)
             alert.addButton(withTitle: "OK")
-            alert.addButton(withTitle: "Open Display Settings…")
+            alert.addButton(withTitle: "macOS Display Settings…")
             if alert.runModal() == .alertSecondButtonReturn { openDisplaySettings() }
             return
         }

@@ -16,8 +16,7 @@ of any kind, and the authors are not liable for any claim, damages, or other
 liability arising from its use.
 
 In practice: Screen Setter changes how your displays are arranged, mirrored,
-and which resolution they use. It checks a layout before applying it and offers
-**Undo**, but a display, cable, adapter, or macOS itself may behave differently
+and which resolution they use. It checks a layout before applying it, but a display, cable, adapter, or macOS itself may behave differently
 from what was saved. If a display goes dark or shows the wrong picture, unplug
 and reconnect it, or open **System Settings › Displays** to put things back.
 Use automatic layouts only on displays you trust them with.

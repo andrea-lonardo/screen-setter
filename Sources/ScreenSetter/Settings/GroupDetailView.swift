@@ -78,7 +78,7 @@ struct GroupDetailView: View {
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
-            Button("Display Settings…") { model.openDisplaySettings() }
+            Button("macOS Display Settings…") { model.openDisplaySettings() }
         }
     }
 

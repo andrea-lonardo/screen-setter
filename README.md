@@ -45,7 +45,7 @@ the ones that fit what's plugged in right now.
   <tr>
     <td width="50%" valign="top">
       <h3>One click from the menu bar</h3>
-      <p>Pick a layout from the menu. The current one has a checkmark, ⌘1 to ⌘9 choose the first nine while the menu is open, and <b>Undo</b> puts back the arrangement from just before.</p>
+      <p>Pick a layout from the menu. The current one has a checkmark, ⌘1 to ⌘9 choose the first nine while the menu is open.</p>
     </td>
     <td width="50%" valign="top">
       <h3>A shortcut for every layout</h3>

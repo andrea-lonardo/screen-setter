@@ -2,6 +2,11 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
+## Unreleased
+
+- Remove Undo from the menu bar menu.
+- Label settings actions as **Screen Setter Settings…** and **macOS Display Settings…** throughout the app.
+
 ## 2.2.0 (25) — 2026-11-05
 
 - Show each display set's layouts as a **gallery** of cards with the

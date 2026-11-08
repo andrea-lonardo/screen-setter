@@ -15,7 +15,7 @@ struct GeneralPane: View {
 
             Section("Displays") {
                 LabeledContent {
-                    Button("Display Settings…") { model.openDisplaySettings() }
+                    Button("macOS Display Settings…") { model.openDisplaySettings() }
                 } label: {
                     Text("Arrangement, resolution and mirroring")
                     Text("Set up your displays in System Settings, then save the arrangement as a layout.")

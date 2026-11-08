@@ -137,7 +137,7 @@ struct SaveArrangementSheet: View {
                         Text("Arrange your displays in System Settings first.")
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Button("Display Settings…") { model.openDisplaySettings() }
+                        Button("macOS Display Settings…") { model.openDisplaySettings() }
                             .controlSize(.small)
                     }
                 }
