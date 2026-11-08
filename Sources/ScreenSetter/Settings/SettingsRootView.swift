@@ -223,7 +223,7 @@ private struct GroupSidebarRow: View {
                 Image(systemName: count > 1 ? "display.2" : "display")
             }
         }
-        .help(connected ? "Connected" : (count == 1 ? "1 display" : "\(count) displays"))
+        .help("\(model.name(of: group)) — \(connected ? "Connected" : "Not connected")")
         .accessibilityElement(children: .combine)
         .accessibilityValue(connected ? "Connected" : "Not connected")
     }

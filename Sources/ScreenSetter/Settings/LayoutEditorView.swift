@@ -6,6 +6,7 @@ struct LayoutEditorView: View {
     let isConnected: Bool
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var draft: Layout
     @State private var selectedDisplayID: String?
 
@@ -62,7 +63,7 @@ struct LayoutEditorView: View {
                 return draft.snapshot.isExtendingAll ? .extend : .mixed
             },
             set: { mode in
-                withAnimation(.snappy(duration: 0.25)) {
+                withAnimation(reduceMotion ? nil : .snappy(duration: 0.25)) {
                     switch mode {
                     case .mirror: draft.snapshot.mirrorAll()
                     case .extend: draft.snapshot.extendAll()
@@ -161,6 +162,8 @@ private struct DisplayInspector: View {
     @Binding var selectedDisplayID: String?
     let display: DisplaySpec
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     private enum Role: Hashable {
         case main, extended, mirror(String)
     }
@@ -234,7 +237,7 @@ private struct DisplayInspector: View {
                 return snapshot.isMain(display.id) ? .main : .extended
             },
             set: { role in
-                withAnimation(.snappy(duration: 0.25)) {
+                withAnimation(reduceMotion ? nil : .snappy(duration: 0.25)) {
                     switch role {
                     case .main: snapshot.makeMain(display.id)
                     case .extended: snapshot.makeExtended(display.id)
@@ -249,7 +252,7 @@ private struct DisplayInspector: View {
         Binding(
             get: { display.mode },
             set: { mode in
-                withAnimation(.snappy(duration: 0.25)) {
+                withAnimation(reduceMotion ? nil : .snappy(duration: 0.25)) {
                     snapshot.setMode(mode, for: display.id)
                 }
             }

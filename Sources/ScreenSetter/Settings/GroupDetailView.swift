@@ -132,37 +132,47 @@ private struct LayoutCard<Actions: View>: View {
     @ViewBuilder let actions: () -> Actions
 
     @State private var isHovering = false
+    @FocusState private var focusedControl: Control?
+    @AccessibilityFocusState private var accessibilityFocusedControl: Control?
+
+    private enum Control: Hashable {
+        case layout, actions
+    }
 
     var body: some View {
         let isActive = model.activeLayoutID == layout.id
-        Button(action: action) {
-            VStack(alignment: .leading, spacing: 8) {
-                preview(isActive: isActive)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(layout.name)
-                        .fontWeight(.medium)
-                        .lineLimit(1)
-                    HStack(spacing: 6) {
-                        Text(isActive ? "Current" : (layout.isMirrored ? "Mirrored" : "Extended"))
-                            .foregroundStyle(isActive ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
-                        Spacer(minLength: 4)
-                        if let hotkey = layout.hotkey {
-                            Text(hotkey.displayString)
-                                .foregroundStyle(.secondary)
-                                .accessibilityLabel("Keyboard shortcut \(hotkey.displayString)")
+        ZStack(alignment: .topLeading) {
+            Button(action: action) {
+                VStack(alignment: .leading, spacing: 8) {
+                    preview(isActive: isActive)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(layout.name)
+                            .fontWeight(.medium)
+                            .lineLimit(1)
+                        HStack(spacing: 6) {
+                            Text(isActive ? "Current" : (layout.isMirrored ? "Mirrored" : "Extended"))
+                                .foregroundStyle(isActive ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
+                            Spacer(minLength: 4)
+                            if let hotkey = layout.hotkey {
+                                Text(hotkey.displayString)
+                                    .foregroundStyle(.secondary)
+                                    .accessibilityLabel("Keyboard shortcut \(hotkey.displayString)")
+                            }
                         }
+                        .font(.callout)
                     }
-                    .font(.callout)
+                    .padding(.horizontal, 2)
                 }
-                .padding(.horizontal, 2)
+                .contentShape(Rectangle())
             }
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .disabled(isConnected && model.isBusy)
-        .help(isConnected ? "Switch to this layout" : "Edit this layout")
-        .contextMenu { actions() }
-        .overlay(alignment: .topLeading) {
+            .buttonStyle(.plain)
+            .focused($focusedControl, equals: .layout)
+            .accessibilityFocused($accessibilityFocusedControl, equals: .layout)
+            .disabled(isConnected && model.isBusy)
+            .help(isConnected ? "Switch to “\(layout.name)”" : "Edit “\(layout.name)”")
+            .contextMenu { actions() }
+            .accessibilityAddTraits(isActive ? .isSelected : [])
+
             Menu {
                 actions()
             } label: {
@@ -173,15 +183,17 @@ private struct LayoutCard<Actions: View>: View {
             .menuStyle(.button)
             .buttonStyle(.plain)
             .menuIndicator(.hidden)
+            .focused($focusedControl, equals: .actions)
+            .accessibilityFocused($accessibilityFocusedControl, equals: .actions)
             .fixedSize()
             .padding(7)
-            .opacity(isHovering ? 1 : 0)
-            .help("More Actions")
-            .accessibilityLabel("More Actions")
+            .opacity(isHovering || focusedControl != nil || accessibilityFocusedControl != nil ? 1 : 0)
+            .help("More actions for “\(layout.name)”")
+            .accessibilityLabel("More actions for \(layout.name)")
         }
         .onHover { isHovering = $0 }
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(isActive ? .isSelected : [])
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(layout.name)
     }
 
     private func preview(isActive: Bool) -> some View {

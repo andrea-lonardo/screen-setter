@@ -46,6 +46,7 @@ struct ArrangementCanvas: View {
 
     @State private var draggingID: String?
     @State private var dragTranslation: CGSize = .zero
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @FocusState private var isFocused: Bool
 
     /// The canvas distance within which edges align while dragging.
@@ -129,7 +130,7 @@ struct ArrangementCanvas: View {
             .onEnded { value in
                 let moved = abs(value.translation.width) > 2 || abs(value.translation.height) > 2
                 let frame = snapshot.frame(of: display)
-                withAnimation(.snappy(duration: 0.25)) {
+                withAnimation(reduceMotion ? nil : .snappy(duration: 0.25)) {
                     if moved {
                         snapshot.moveDisplay(
                             display.id,
@@ -147,7 +148,7 @@ struct ArrangementCanvas: View {
     }
 
     private func nudge(_ id: String, _ direction: LayoutSnapshot.NudgeDirection) {
-        withAnimation(.snappy(duration: 0.2)) {
+        withAnimation(reduceMotion ? nil : .snappy(duration: 0.2)) {
             if !snapshot.nudgeDisplay(id, direction) { NSSound.beep() }
         }
     }

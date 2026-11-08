@@ -43,7 +43,8 @@ final class SettingsWindowController: NSWindowController {
         window.tabbingMode = .disallowed
         window.collectionBehavior.insert(.fullScreenNone)
         window.center()
-        window.setFrameAutosaveName("ScreenSetterSettings")
+        // Sample windows must not restore or save the real Settings window’s frame.
+        if !model.isPreview { window.setFrameAutosaveName("ScreenSetterSettings") }
     }
 
     required init?(coder: NSCoder) { nil }
@@ -161,7 +162,16 @@ enum WindowRenderer {
             }
             // The window controls and toolbar sit above the sidebar.
             let titlebar = root.subviews.first { String(describing: type(of: $0)).contains("Titlebar") }
-            if let titlebar { draw(titlebar, rect: titlebar.bounds) }
+            if let titlebar {
+                draw(titlebar, rect: titlebar.bounds)
+                // Vibrant title text also captures as a black mask in dark mode.
+                if root.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua {
+                    for label in views(of: NSTextField.self, in: titlebar)
+                    where !label.isEditable && !label.isHidden {
+                        draw(label, rect: label.bounds, tint: .labelColor)
+                    }
+                }
+            }
         }
     }
 }
