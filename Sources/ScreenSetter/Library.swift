@@ -44,6 +44,9 @@ struct Layout: Codable, Identifiable, Equatable, Sendable {
     /// Layouts are grouped by the exact set of displays they use.
     var groupID: String { snapshot.topologyKey }
     var isMirrored: Bool { snapshot.displays.contains { $0.mirrorSourceID != nil } }
+
+    /// A stable automation link that keeps targeting this layout after a rename.
+    var applyURL: String { "screensetter://apply/" + id.uuidString }
 }
 
 /// A display set. Created automatically when a layout for new hardware is saved;

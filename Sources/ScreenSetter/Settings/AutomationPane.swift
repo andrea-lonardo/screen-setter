@@ -54,13 +54,13 @@ struct AutomationPane: View {
         } header: {
             Text("Apply with a URL")
         } footer: {
-            Text("Open these links from Shortcuts, scripts or other apps to switch layouts.")
+            Text("Open these links from Shortcuts, scripts or other apps to switch layouts. Links still work if you rename a layout.")
                 .foregroundStyle(.secondary)
         }
     }
 
     private func urlRow(for layout: Layout) -> some View {
-        let url = AppInfo.applyURL(forLayoutNamed: layout.name)
+        let url = layout.applyURL
         let copied = copiedLayoutID == layout.id
         return LabeledContent {
             Button(copied ? "Copied" : "Copy") { copy(url, for: layout.id) }

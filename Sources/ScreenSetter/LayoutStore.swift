@@ -150,8 +150,9 @@ final class LayoutStore: @unchecked Sendable {
         let wanted = identifier.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !wanted.isEmpty else { return nil }
         return locked {
-            if let id = UUID(uuidString: wanted), let layout = state.layouts.first(where: { $0.id == id }) {
-                return layout
+            // UUID links must not fall back to a namesake after their target is deleted.
+            if let id = UUID(uuidString: wanted) {
+                return state.layouts.first { $0.id == id }
             }
             if let layout = state.layouts.first(where: { $0.legacyID?.caseInsensitiveCompare(wanted) == .orderedSame }) {
                 return layout

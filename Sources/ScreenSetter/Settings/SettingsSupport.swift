@@ -91,14 +91,6 @@ enum AppInfo {
 
     /// The URL schemes the app handles: its own, then the one used before the rename.
     static let urlSchemes = ["screensetter", "displaylayouts"]
-
-    /// `screensetter://apply/<name>` with the name percent-encoded.
-    static func applyURL(forLayoutNamed name: String) -> String {
-        var allowed = CharacterSet.urlPathAllowed
-        allowed.remove(charactersIn: "/")
-        let encoded = name.addingPercentEncoding(withAllowedCharacters: allowed) ?? name
-        return "screensetter://apply/" + encoded
-    }
 }
 
 /// Asks for a name and saves the current display arrangement as a new layout.
