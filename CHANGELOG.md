@@ -2,7 +2,7 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
-## Unreleased
+## 2.2.1 (26) — 2026-11-08
 
 - Remove Undo from the menu bar menu.
 - Label settings actions as **Screen Setter Settings…** and **macOS Display Settings…** throughout the app.
