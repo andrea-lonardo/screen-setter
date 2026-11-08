@@ -88,9 +88,9 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         let save = item("Save Current Arrangement…", action: #selector(saveCurrentArrangement), symbol: "plus.rectangle.on.rectangle")
         save.isEnabled = !busy
         menu.addItem(save)
+        menu.addItem(item("macOS Display Settings…", action: #selector(openDisplaySettings), symbol: "display"))
 
         menu.addItem(.separator())
-        menu.addItem(item("macOS Display Settings…", action: #selector(openDisplaySettings), symbol: "display"))
         menu.addItem(item("Screen Setter Settings…", action: #selector(openSettings), symbol: "gearshape", key: ","))
         let updates = item("Check for Updates…", action: #selector(checkForUpdates), symbol: "arrow.triangle.2.circlepath")
         updates.isEnabled = model.updates.canCheckForUpdates

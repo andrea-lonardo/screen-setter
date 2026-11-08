@@ -2,6 +2,10 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
+## 2.2.4 (29) — 2026-11-08
+
+- Group display actions together in the menu: Save Current Arrangement and macOS Display Settings, followed by Screen Setter Settings and updates in their own section.
+
 ## 2.2.3 (28) — 2026-11-08
 
 - Keep Settings at a usable minimum size, preserve room for the content beside the sidebar, and repair undersized saved windows.
