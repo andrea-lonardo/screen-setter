@@ -2,7 +2,7 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
-## Unreleased
+## 2.2.3 (28) — 2026-11-08
 
 - Keep Settings at a usable minimum size, preserve room for the content beside the sidebar, and repair undersized saved windows.
 
