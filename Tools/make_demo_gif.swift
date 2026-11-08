@@ -120,7 +120,7 @@ func frame(from: Int, to: Int, progress: CGFloat, highlighted: Int?, checked: In
         drawTile(studio, title: "Studio Display", detail: "2560 × 1440", main: true, alpha: 1)
 
         // Screen Setter's menu.
-        let menu = CGRect(x: size.width - 470, y: barHeight + 10, width: 450, height: 304)
+        let menu = CGRect(x: size.width - 470, y: barHeight + 10, width: 450, height: 260)
         let menuPath = NSBezierPath(roundedRect: menu, xRadius: 16, yRadius: 16)
         color(0x1C1F28, 0.97).setFill()
         menuPath.fill()

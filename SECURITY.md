@@ -4,8 +4,7 @@
 
 Please report security problems privately through GitHub's
 [private vulnerability reporting](https://github.com/andrea-lonardo/screen-setter/security/advisories/new)
-rather than in a public issue. Include the Screen Setter version (Settings ›
-General › About), your macOS version, and steps to reproduce.
+rather than in a public issue. Include the Screen Setter version (Settings › About), your macOS version, and steps to reproduce.
 
 You can expect an acknowledgement within a week. Fixes ship in a new release,
 and the report is credited unless you prefer otherwise.

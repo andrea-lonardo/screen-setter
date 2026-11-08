@@ -2,6 +2,14 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
+## 2.2.2 (27) — 2026-11-08
+
+- Copied layout links keep working after renaming and distinguish layouts with the same name.
+- Show full layout and display-set names in tooltips, reveal card actions during keyboard focus, and label each actions menu with its layout name.
+- Respect Reduce Motion when editing display arrangements.
+- Refresh the Settings and welcome screenshots and the menu demo.
+- Add regression coverage for copied links and the layout editor’s geometry operations.
+
 ## 2.2.1 (26) — 2026-11-08
 
 - Remove Undo from the menu bar menu.

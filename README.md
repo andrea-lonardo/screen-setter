@@ -73,7 +73,7 @@ one main display, no overlaps, every display touching another.
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/settings-dark.png">
-    <img src="docs/images/settings.png" width="760" alt="Screen Setter Settings listing three layouts for a built-in display and a Studio Display, one with a keyboard shortcut, and the layout to apply automatically when those displays connect">
+    <img src="docs/images/settings.png" width="760" alt="Screen Setter Settings showing a gallery of three layouts for a built-in display and a Studio Display, with the current arrangement highlighted and a New Layout card">
   </picture>
 </p>
 
@@ -173,7 +173,9 @@ screensetter://settings
 
 `apply` accepts a layout's name (not case-sensitive; spaces and other special
 characters are percent-encoded), its identifier, or a 1.x preset ID such as
-`ipad-left`. If two layouts share a name, rename one or use the identifier. URLs
+`ipad-left`. Links copied from **Settings › Automation** use a layout’s
+identifier, so they keep working after renaming and distinguish layouts with the
+same name. If two layouts share a name, use a copied link or the identifier. URLs
 only apply saved layouts; they can't save, change, or delete anything, and they
 never run commands or scripts. Open Screen Setter once normally so macOS registers
 its URL scheme. Links that use the old `displaylayouts://` scheme work the same way.
