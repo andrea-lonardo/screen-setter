@@ -251,6 +251,7 @@ There is no Xcode project; the app is built with `swiftc`.
 ```sh
 ./build.sh
 sh Tests/run.sh
+sh Tests/run-window-sizing.sh
 "build/Screen Setter.app/Contents/MacOS/Screen Setter" --diagnose
 ```
 
@@ -261,7 +262,9 @@ The first run sets up [dmgbuild](https://pypi.org/project/dmgbuild/) in
 `build/dmg-venv`. It doesn't install or publish
 anything. `--diagnose` prints the connected displays without changing anything or
 reading your saved layouts. The tests use temporary files and a fake display
-engine, so they never rearrange your screens.
+engine, so they never rearrange your screens. The window-sizing check also uses
+isolated sample data and renders offscreen; it verifies the minimum size after
+SwiftUI layout and navigation.
 
 To try the interface with sample data that can't touch your real displays or
 layouts:

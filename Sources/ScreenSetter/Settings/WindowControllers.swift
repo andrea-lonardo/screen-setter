@@ -11,6 +11,12 @@ enum SettingsRenderError: LocalizedError {
     var errorDescription: String? { "The window could not be rendered." }
 }
 
+/// Shared bounds keep AppKit resizing and SwiftUI’s split-view layout in agreement.
+enum SettingsWindowMetrics {
+    static let minimumSize = NSSize(width: 760, height: 640)
+    static let minimumDetailWidth: CGFloat = 440
+}
+
 /// Hosts the SwiftUI Settings window. Created once by the app shell and reused.
 @MainActor
 final class SettingsWindowController: NSWindowController {
@@ -29,14 +35,14 @@ final class SettingsWindowController: NSWindowController {
 
         let root = SettingsRootView(model: model, navigation: navigation)
         let hosting = NSHostingController(rootView: root)
-        hosting.sizingOptions = []
+        hosting.sizingOptions = [.minSize]
         hosting.sceneBridgingOptions = [.toolbars, .title]
         window.contentViewController = hosting
 
         window.title = "Screen Setter"
         window.toolbarStyle = .unified
         // Tall enough for the 680×600 layout editor sheet to fit inside the window.
-        window.contentMinSize = NSSize(width: 760, height: 640)
+        window.contentMinSize = SettingsWindowMetrics.minimumSize
         window.setContentSize(NSSize(width: 860, height: 680))
         window.isReleasedWhenClosed = false
         window.isRestorable = false
@@ -45,6 +51,12 @@ final class SettingsWindowController: NSWindowController {
         window.center()
         // Sample windows must not restore or save the real Settings window’s frame.
         if !model.isPreview { window.setFrameAutosaveName("ScreenSetterSettings") }
+        // Repair a narrow frame saved before these bounds were enforced.
+        let restoredSize = window.contentRect(forFrameRect: window.frame).size
+        window.setContentSize(NSSize(
+            width: max(restoredSize.width, SettingsWindowMetrics.minimumSize.width),
+            height: max(restoredSize.height, SettingsWindowMetrics.minimumSize.height)
+        ))
     }
 
     required init?(coder: NSCoder) { nil }

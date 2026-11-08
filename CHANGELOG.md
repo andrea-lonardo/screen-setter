@@ -2,6 +2,10 @@
 
 Release tags combine the marketing version and build number: `v<version>.<build>`.
 
+## Unreleased
+
+- Keep Settings at a usable minimum size, preserve room for the content beside the sidebar, and repair undersized saved windows.
+
 ## 2.2.2 (27) — 2026-11-08
 
 - Copied layout links keep working after renaming and distinguish layouts with the same name.

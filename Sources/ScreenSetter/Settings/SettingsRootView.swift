@@ -46,8 +46,11 @@ struct SettingsRootView: View {
                 .navigationSplitViewColumnWidth(min: 220, ideal: 240, max: 320)
         } detail: {
             detail
+                .frame(minWidth: SettingsWindowMetrics.minimumDetailWidth)
                 .navigationTitle(title)
         }
+        .frame(minWidth: SettingsWindowMetrics.minimumSize.width,
+               minHeight: SettingsWindowMetrics.minimumSize.height)
         .sheet(isPresented: $navigation.isSavingCurrentArrangement) {
             SaveArrangementSheet(model: model) { layout in
                 navigation.selection = .group(layout.groupID)
