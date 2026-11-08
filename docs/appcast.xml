@@ -3,6 +3,22 @@
     <channel>
         <title>Screen Setter</title>
         <item>
+            <title>2.2.4</title>
+            <pubDate>Sun, 08 Nov 2026 22:40:07 +0100</pubDate>
+            <link>https://andrea-lonardo.github.io/screen-setter/</link>
+            <sparkle:fullReleaseNotesLink>https://github.com/andrea-lonardo/screen-setter/releases</sparkle:fullReleaseNotesLink>
+            <sparkle:version>29</sparkle:version>
+            <sparkle:shortVersionString>2.2.4</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[<style>body { font-family: -apple-system, system-ui; font-size: 13px; line-height: 1.4; margin: 6px 4px; } ul { margin: 0; padding-left: 18px; } li { margin: 0 0 6px; }</style>
+<ul>
+<li>Group Save Current Arrangement and macOS Display Settings together in the menu.</li>
+<li>Keep Screen Setter Settings and updates in their own section, with Quit below.</li>
+</ul>
+]]></description>
+            <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.2.4.29/Screen-Setter.zip" length="4043617" type="application/octet-stream" sparkle:edSignature="xDGNYLQn9ZgApmC3M5nkcDe9Jhg6Z2+Kzjegwt4yKMlCUVcMmpWARn3Ocdz9/F/KA4X2stmjhlcxsa3jpr1nAw=="/>
+        </item>
+        <item>
             <title>2.2.3</title>
             <pubDate>Sun, 08 Nov 2026 21:53:09 +0100</pubDate>
             <link>https://andrea-lonardo.github.io/screen-setter/</link>
@@ -34,22 +50,6 @@
 </ul>
 ]]></description>
             <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.2.2.27/Screen-Setter.zip" length="4039075" type="application/octet-stream" sparkle:edSignature="aN0EyxpkF5CZRK57rr7a49nEfg41po3uNZtYILwYX8Beq5LXVkSwrtnrc23YPHdp98ZeTQLfqE8WU2mW4K86CQ=="/>
-        </item>
-        <item>
-            <title>2.2.1</title>
-            <pubDate>Sun, 08 Nov 2026 17:18:52 +0100</pubDate>
-            <link>https://andrea-lonardo.github.io/screen-setter/</link>
-            <sparkle:fullReleaseNotesLink>https://github.com/andrea-lonardo/screen-setter/releases</sparkle:fullReleaseNotesLink>
-            <sparkle:version>26</sparkle:version>
-            <sparkle:shortVersionString>2.2.1</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<style>body { font-family: -apple-system, system-ui; font-size: 13px; line-height: 1.4; margin: 6px 4px; } ul { margin: 0; padding-left: 18px; } li { margin: 0 0 6px; }</style>
-<ul>
-<li>Remove Undo from the menu bar menu.</li>
-<li>Clearly distinguish Screen Setter Settings… from macOS Display Settings… throughout the app.</li>
-</ul>
-]]></description>
-            <enclosure url="https://github.com/andrea-lonardo/screen-setter/releases/download/v2.2.1.26/Screen-Setter.zip" length="4027591" type="application/octet-stream" sparkle:edSignature="z1fHBDTou2JCeaLAxR29vghYUO5u9ogKUe+TtSkSgTYThl81aGy+BKHpJT/Brc1yv3CaTLJJ7EYx24o+NnbWDA=="/>
         </item>
     </channel>
 </rss>
